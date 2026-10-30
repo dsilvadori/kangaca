@@ -1849,10 +1849,6 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
     grid-column: 1 / -1;
   }
 
-  .instagram__mosaico {
-    grid-template-columns: repeat(5, minmax(0, 200px));
-  }
-
   .casa__fotos {
     gap: 1.5rem;
   }
@@ -1872,6 +1868,10 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
 }
 
 @media (min-width: 1024px) {
+  .instagram__mosaico {
+    grid-template-columns: repeat(6, minmax(0, 190px));
+  }
+
   .header__nav {
     display: flex;
     gap: 1.5rem;
