@@ -31,7 +31,7 @@ O site é servido como arquivos estáticos de um Worker. A configuração está 
 - Deploy command: `npx wrangler deploy`
 - Variável de build: `NODE_VERSION` = `22.23.4`
 
-Cada `git push` na `main` publica uma nova versão.
+Cada `git push` na `main` publica uma nova versão em alguns minutos. Se o build falhar, a versão anterior continua no ar.
 
 **Pela linha de comando:**
 
