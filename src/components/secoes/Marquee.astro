@@ -1,0 +1,22 @@
+---
+import Simbolo from '../Simbolo.astro';
+
+const ingredientes = ['arroz', 'dendê', 'gohan', 'missô', 'coco', 'manga', 'coentro', 'pernil', 'tamarindo', 'azeites da casa', 'conservas'];
+---
+
+<section class="marquee" aria-label="Ingredientes da casa" data-marquee>
+  <div class="marquee__trilha" data-marquee-trilha>
+    {
+      [0, 1].map((copia) => (
+        <ul class="marquee__grupo" aria-hidden={copia === 1 ? 'true' : undefined}>
+          {ingredientes.map((item) => (
+            <li>
+              {item}
+              <Simbolo />
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</section>

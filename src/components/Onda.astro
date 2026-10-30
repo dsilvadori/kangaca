@@ -1,0 +1,19 @@
+---
+// Divisor de seção: as duas camadas correm em sentidos opostos, lembrando os mares e as travessias.
+interface Props {
+  de: 'escuro' | 'claro';
+  para: 'escuro' | 'claro';
+}
+const { de, para } = Astro.props;
+const onda =
+  'M0 40C240 0 480 0 720 40S1200 80 1440 40 1920 0 2160 40 2640 80 2880 40V120H0Z';
+---
+
+<div class:list={['onda', `onda--de-${de}`, `onda--para-${para}`]} aria-hidden="true">
+  <svg class="onda__fundo" viewBox="0 0 2880 120" preserveAspectRatio="none" focusable="false">
+    <path d={onda}></path>
+  </svg>
+  <svg class="onda__frente" viewBox="0 0 2880 120" preserveAspectRatio="none" focusable="false">
+    <path d={onda}></path>
+  </svg>
+</div>

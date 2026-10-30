@@ -1,0 +1,41 @@
+---
+import Cta from './Cta.astro';
+import logo from '../assets/logo/kangaca-logo-bege.png';
+
+interface Props {
+  sobreHero?: boolean;
+  logoFixo?: boolean;
+}
+const { sobreHero = false, logoFixo = false } = Astro.props;
+
+const links = [
+  { href: '/#casa', rotulo: 'A casa' },
+  { href: '/#cardapio', rotulo: 'Cardápio' },
+  { href: '/#almoco', rotulo: 'Almoço' },
+  { href: '/#eventos', rotulo: 'Eventos' },
+  { href: '/#bia', rotulo: 'Bia' },
+  { href: '/#visite', rotulo: 'Visite' },
+];
+---
+
+<header class:list={['header', { 'header--sobre-hero': sobreHero, 'header--logo-fixo': logoFixo }]} data-header>
+  <a class="header__logo" href="/#topo" aria-label="Kangaça, voltar ao início">
+    <img src={logo.src} alt="" width={logo.width} height={logo.height} />
+  </a>
+  <nav class="header__nav" aria-label="Principal">
+    {links.map((l) => <a href={l.href}>{l.rotulo}</a>)}
+  </nav>
+  <Cta motivo="reserva" local="header" class="header__cta">Reservar</Cta>
+  <button class="header__botao" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-menu-botao>
+    <span></span><span></span>
+  </button>
+</header>
+
+<div id="menu" class="menu" data-menu inert>
+  <nav aria-label="Menu">
+    <ul>
+      {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.rotulo}</a></li>)}
+    </ul>
+  </nav>
+  <Cta motivo="reserva" local="menu">Reservar pelo WhatsApp</Cta>
+</div>

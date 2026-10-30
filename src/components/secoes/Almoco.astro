@@ -1,0 +1,38 @@
+---
+import Img from '../Img.astro';
+import Cta from '../Cta.astro';
+import Simbolo from '../Simbolo.astro';
+import frango from '../../assets/pratos/prato-do-dia-frango.jpg';
+import almoco from '../../assets/pratos/almoco-executivo.jpg';
+import { A_CONFIRMAR, HORARIOS } from '../../config/site';
+
+const { titulo = 'Almoço executivo na Vila Mariana' } = Astro.props;
+const inclui = ['Entrada', 'Prato principal', 'Sobremesa', 'Suco cozido, feito de compota caseira'];
+---
+
+<section class="secao secao--clara almoco" id="almoco" aria-labelledby="almoco-titulo">
+  <div class="almoco__texto">
+    <p class="sobretitulo">Almoço</p>
+    <h2 id="almoco-titulo" data-split>{titulo}</h2>
+    <p class="lead" data-reveal>Comida caseira sem fronteiras. Gostinho de casa e aconchego, mas viaja o mundo.</p>
+    <p class="almoco__horario" data-reveal>
+      <strong>{HORARIOS.almoco.dias}</strong>
+      <span>{HORARIOS.almoco.faixa}</span>
+    </p>
+    <ul class="lista-simbolo" data-reveal>
+      {inclui.map((item) => <li><Simbolo />{item}</li>)}
+    </ul>
+    <p class="nota" data-reveal>Preço e cardápio de hoje? {A_CONFIRMAR.precos}.</p>
+    <div data-reveal>
+      <Cta motivo="almoco" local="almoco">Chamar no WhatsApp</Cta>
+    </div>
+  </div>
+  <div class="almoco__fotos">
+    <div class="almoco__foto-1" data-curtain>
+      <Img src={frango} alt="Prato do dia: frango assado com arroz, legumes tostados e pasta em prato dourado" sizes="(min-width: 480px) 448px, 100vw" />
+    </div>
+    <div class="almoco__foto-2" data-curtain>
+      <Img src={almoco} alt="Prato do almoço executivo com arroz, servido em prato dourado" sizes="224px" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,34 @@
+---
+import Campanha from '../layouts/Campanha.astro';
+import HeroCampanha from '../components/secoes/HeroCampanha.astro';
+import Jantares from '../components/secoes/Jantares.astro';
+import Cta from '../components/Cta.astro';
+import Onda from '../components/Onda.astro';
+import porta from '../assets/fotos/porta-turquesa-logo.jpg';
+---
+
+<Campanha
+  titulo="Jantares especiais na Vila Mariana, SP | Kangaça"
+  descricao="Jantares especiais e menus temáticos sob reserva na Vila Mariana, São Paulo. Veja as próximas datas e reserve sua mesa pelo WhatsApp."
+  caminho="/jantares-especiais/"
+  nome="Jantares especiais"
+>
+  <HeroCampanha
+    slot="hero"
+    sobretitulo="Sob reserva"
+    linhas={['Jantares especiais', 'na Vila Mariana']}
+    texto="Menus temáticos da cozinha afro-brasileira com umami asiático, com datas divulgadas no Instagram."
+    imagem={porta}
+    alt="Porta de aço turquesa do Kangaça com o logo pintado, iluminada à noite"
+  >
+    <Cta motivo="jantar" local="hero-jantares">Reservar um jantar</Cta>
+  </HeroCampanha>
+  <Onda de="claro" para="escuro" />
+  <Jantares titulo="Como são os nossos jantares" />
+  <Onda de="escuro" para="claro" />
+  <section class="secao secao--clara volta-home" aria-labelledby="datas-titulo">
+    <h2 id="datas-titulo">Próximas datas</h2>
+    <p>Fale com a gente para saber do próximo menu.</p>
+    <Cta motivo="jantar" local="jantares-datas">Quero saber as datas</Cta>
+  </section>
+</Campanha>

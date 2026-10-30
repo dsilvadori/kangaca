@@ -1,0 +1,91 @@
+---
+import '@fontsource/dm-serif-display/latin-400.css';
+import '@fontsource/dm-sans/latin-400.css';
+import '@fontsource/dm-sans/latin-500.css';
+import '@fontsource/dm-sans/latin-700.css';
+import '@fontsource/dancing-script/latin-600.css';
+import 'lenis/dist/lenis.css';
+import '../styles/global.css';
+import fonteTitulo from '@fontsource/dm-serif-display/files/dm-serif-display-latin-400-normal.woff2?url';
+
+import Header from '../components/Header.astro';
+import Rodape from '../components/Rodape.astro';
+import Flutuantes from '../components/Flutuantes.astro';
+import Consentimento from '../components/Consentimento.astro';
+import Rastreamento from '../components/Rastreamento.astro';
+import Simbolo from '../components/Simbolo.astro';
+import SEO from '../components/SEO.astro';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  caminho?: string;
+  home?: boolean;
+  logoFixo?: boolean;
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+
+const { titulo, descricao, caminho, home = false, logoFixo = false, noindex = false, jsonLd } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SEO titulo={titulo} descricao={descricao} caminho={caminho} noindex={noindex} jsonLd={jsonLd} />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href={fonteTitulo} as="font" type="font/woff2" crossorigin />
+
+    <script is:inline define:vars={{ home }}>
+      // Roda antes da pintura. A classe `js` libera o estado inicial das animações.
+      (function () {
+        var html = document.documentElement;
+        html.classList.add('js');
+        if (location.hash) html.classList.add('layout-completo');
+        var semMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        try {
+          if (home && !semMovimento && !sessionStorage.getItem('kg-loader')) {
+            html.classList.add('loader-on');
+            sessionStorage.setItem('kg-loader', '1');
+          }
+        } catch (e) {}
+        try {
+          // Decidido aqui para o banner já sair na primeira pintura.
+          if (!localStorage.getItem('kg-consentimento')) html.classList.add('pede-consentimento');
+        } catch (e) {}
+        // Se as animações não carregarem, nada pode ficar escondido.
+        setTimeout(function () {
+          if (!window.__kgAnimacoes) html.classList.remove('js');
+        }, 6000);
+      })();
+    </script>
+
+    <Rastreamento />
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    {
+      home && (
+        <div class="loader" aria-hidden="true">
+          <Simbolo />
+        </div>
+      )
+    }
+    <Header sobreHero={home || logoFixo} logoFixo={logoFixo} />
+    <main id="conteudo">
+      <slot />
+    </main>
+    <Rodape />
+    <Flutuantes />
+    <Consentimento />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

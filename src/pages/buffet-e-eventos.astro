@@ -1,0 +1,27 @@
+---
+import Campanha from '../layouts/Campanha.astro';
+import HeroCampanha from '../components/secoes/HeroCampanha.astro';
+import Eventos from '../components/secoes/Eventos.astro';
+import Cta from '../components/Cta.astro';
+import jardim from '../assets/fotos/jardim-quintal.jpg';
+---
+
+<Campanha
+  titulo="Buffet para eventos em São Paulo | Kangaça"
+  descricao="Buffet para eventos em São Paulo: finger foods, drinks e doces no seu local ou na nossa casa na Vila Mariana. Peça seu orçamento pelo WhatsApp."
+  caminho="/buffet-e-eventos/"
+  nome="Buffet e eventos"
+>
+  <HeroCampanha
+    slot="hero"
+    sobretitulo="Eventos e buffet"
+    linhas={['Buffet para eventos', 'em São Paulo']}
+    texto="O Kangaça cozinha no seu evento, ou seu evento acontece aqui em casa, na Vila Mariana. Buffet, finger foods, drinks e doces."
+    imagem={jardim}
+    alt="Quintal do Kangaça com mesinhas brancas, sofá azul e plantas penduradas"
+  >
+    <a class="btn btn--primario" href="#orcamento" data-cta="evento" data-local="hero-eventos" data-magnetic>Pedir orçamento</a>
+    <Cta motivo="evento" local="hero-eventos" variante="contorno">Falar no WhatsApp</Cta>
+  </HeroCampanha>
+  <Eventos titulo="Do cardápio ao serviço, a gente cuida" />
+</Campanha>

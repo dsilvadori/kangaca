@@ -1,0 +1,21 @@
+---
+import Simbolo from './Simbolo.astro';
+import logo from '../assets/logo/kangaca-logo-bege.png';
+import assinatura from '../assets/logo/cozinha-de-encontros-bege.png';
+import { ENDERECO, INSTAGRAM, SITE, WHATSAPP } from '../config/site';
+import { whatsappLink } from '../lib/whatsapp';
+---
+
+<footer class="rodape" data-rodape>
+  <div class="rodape__marca">
+    <img src={logo.src} alt="Kangaça" width={logo.width} height={logo.height} loading="lazy" />
+    <img src={assinatura.src} alt={SITE.assinatura} width={assinatura.width} height={assinatura.height} loading="lazy" />
+  </div>
+  <div class="rodape__dados">
+    <address>{ENDERECO.completo}</address>
+    <a href={whatsappLink('geral')} target="_blank" rel="noopener" data-cta="geral" data-local="rodape">WhatsApp {WHATSAPP.exibicao}</a>
+    <a href={INSTAGRAM.url} target="_blank" rel="noopener">Instagram {INSTAGRAM.usuario}</a>
+    <a href="/politica-de-privacidade/">Política de privacidade</a>
+  </div>
+  <p class="rodape__frase"><Simbolo /> {SITE.conceito}</p>
+</footer>

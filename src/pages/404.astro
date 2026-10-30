@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Cta from '../components/Cta.astro';
+import Simbolo from '../components/Simbolo.astro';
+---
+
+<Base titulo="Página não encontrada | Kangaça" descricao="Esta página não existe. Volte para o site do Kangaça, restaurante na Vila Mariana, São Paulo." caminho="/" noindex>
+  <section class="pagina-erro">
+    <Simbolo />
+    <p class="sobretitulo">Erro 404</p>
+    <h1>Essa travessia não chegou a lugar nenhum</h1>
+    <p class="lead">A página que você procura não existe. Volte para a casa ou fale com a gente.</p>
+    <div class="pagina-erro__acoes">
+      <a class="btn btn--contorno" href="/">Voltar ao início</a>
+      <Cta motivo="geral" local="404">Chamar no WhatsApp</Cta>
+    </div>
+  </section>
+</Base>

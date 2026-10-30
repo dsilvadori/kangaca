@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: confirmar domínio
+Sitemap: https://kangaca.com.br/sitemap-index.xml

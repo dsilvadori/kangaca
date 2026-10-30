@@ -1,0 +1,56 @@
+---
+/*
+ * Imagem responsiva: <picture> com AVIF, WebP e JPG de reserva.
+ * Só gera larguras até a do arquivo original (nunca estica) e no máximo LARGURA_MAXIMA,
+ * porque nenhuma foto do site ocupa mais que isso na tela.
+ *
+ * Trocar por fotos profissionais quando houver (mantendo os nomes em src/assets/):
+ *   fotos/fachada-com-clientes, fotos/bia-souza,
+ *   pratos/goxinha, pratos/goxinha-close, pratos/creme-de-arroz-khao-niao-mamuang,
+ *   pratos/gravlax-salmao-curado, pratos/prato-do-dia-frango, pratos/almoco-executivo,
+ *   pratos/evento-buffet-finger-food, pratos/menu-mar-e-terra e instagram-baixa-resolucao/*.
+ * bia-souza, gravlax e evento foram recortadas para tirar restos de interface e texto gravado.
+ */
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  sizes: string;
+  prioridade?: boolean;
+  /** Para artes com texto pequeno, que não podem perder nitidez. */
+  nitida?: boolean;
+  class?: string;
+}
+
+const { src, alt, sizes, prioridade = false, nitida = false, class: classe } = Astro.props;
+
+const LARGURA_MAXIMA = 1065;
+const LARGURA_RESERVA = 640;
+const QUALIDADE = nitida ? { avif: 62, webp: 76, jpg: 78 } : { avif: 46, webp: 60, jpg: 66 };
+
+const limite = Math.min(src.width, LARGURA_MAXIMA);
+const widths = [320, 480, 640, 800].filter((w) => w < limite).concat(limite);
+
+const [avif, webp, reserva] = await Promise.all([
+  getImage({ src, widths, format: 'avif', quality: QUALIDADE.avif }),
+  getImage({ src, widths, format: 'webp', quality: QUALIDADE.webp }),
+  getImage({ src, width: Math.min(limite, LARGURA_RESERVA), format: 'jpg', quality: QUALIDADE.jpg }),
+]);
+---
+
+<picture>
+  <source type="image/avif" srcset={avif.srcSet.attribute} sizes={sizes} />
+  <source type="image/webp" srcset={webp.srcSet.attribute} sizes={sizes} />
+  <img
+    src={reserva.src}
+    alt={alt}
+    width={reserva.attributes.width}
+    height={reserva.attributes.height}
+    loading={prioridade ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={prioridade ? 'high' : undefined}
+    class={classe}
+  />
+</picture>

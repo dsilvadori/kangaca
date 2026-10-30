@@ -1,0 +1,88 @@
+---
+import Img from '../Img.astro';
+import Cta from '../Cta.astro';
+import Simbolo from '../Simbolo.astro';
+import goxinha from '../../assets/pratos/goxinha.jpg';
+import goxinhaClose from '../../assets/pratos/goxinha-close.jpg';
+import gravlax from '../../assets/pratos/gravlax-salmao-curado.jpg';
+import creme from '../../assets/pratos/creme-de-arroz-khao-niao-mamuang.jpg';
+import frango from '../../assets/pratos/prato-do-dia-frango.jpg';
+import { A_CONFIRMAR } from '../../config/site';
+
+const pratos = [
+  {
+    nome: 'Goxinha',
+    rota: 'Brasil × Japão',
+    foto: goxinha,
+    fotoHover: goxinhaClose,
+    alt: 'Goxinhas douradas sobre folhas de nori, com catchup de missô e maionese de wasabi, em prato branco',
+    texto: 'Coxinha de gohan recheada de pernil desfiado agridoce e gergelim tostado, com catchup de missô e maionese de wasabi.',
+    frase: 'Um encontro do Brasil com o Japão.',
+  },
+  {
+    nome: 'Gravlax na focaccia',
+    rota: 'Escandinávia × Minas Gerais',
+    foto: gravlax,
+    alt: 'Close do salmão curado sendo fatiado com faca, em tons dourados',
+    texto: 'Salmão curado com sal, açúcar, ervas, coentro, gin e cachacinha mineira, em sanduíche de focaccia feita na casa, com salada do dia, maionese temperada e sour cream.',
+    frase: 'O tempo também é ingrediente.',
+  },
+  {
+    nome: 'Creme de arroz com especiarias',
+    rota: 'Tailândia × Japão × Índia × Brasil',
+    foto: creme,
+    alt: 'Creme de arroz com coulis de manga e coco ralado servido numa cumbuca de coco, com samambaias ao fundo',
+    texto: 'A leitura do Kangaça para o Khao Niao Mamuang tailandês: gohan premium de grão curto, especiarias, leite de coco, coulis de manga com pêssego e coco ralado.',
+    frase: 'Viajou da Tailândia pra nossa cozinha, mas pegou um pouquinho de Japão, Índia e do nosso toque abrasileirado.',
+  },
+  {
+    nome: 'Prato do dia',
+    rota: 'Brasil × África × Ásia',
+    foto: frango,
+    largo: true,
+    alt: 'Frango assado com arroz branco, legumes tostados e pasta num prato dourado',
+    texto: 'Aqui você escolhe seu prato, cada dia um jeitinho diferente, sabores que conectam Brasil, África e Ásia.',
+  },
+];
+---
+
+<section class="secao secao--escura cardapio" id="cardapio" aria-labelledby="cardapio-titulo" data-carrossel>
+  <div class="cardapio__cabeca">
+    <div>
+      <p class="sobretitulo">Cardápio</p>
+      <h2 id="cardapio-titulo" data-split>Pratos que contam travessias</h2>
+    </div>
+    <div class="carrossel__setas">
+      <button type="button" aria-label="Prato anterior" data-carrossel-seta="-1">←</button>
+      <button type="button" aria-label="Próximo prato" data-carrossel-seta="1">→</button>
+    </div>
+  </div>
+  <div class="cardapio__janela">
+    <ul class="cardapio__trilha" tabindex="0" aria-label="Pratos do cardápio" data-carrossel-trilha>
+      {
+        pratos.map((p) => (
+          <li class:list={['prato', { 'prato--largo': p.largo }]} data-prato>
+            <div class="prato__foto" data-curtain>
+              <Img src={p.foto} alt={p.alt} sizes={`(min-width: 480px) ${p.foto.width}px, 100vw`} />
+              {p.fotoHover && <Img class="prato__foto-hover" src={p.fotoHover} alt="" sizes={`${p.fotoHover.width}px`} />}
+              <span class="prato__rota-foto" aria-hidden="true"><Simbolo /> {p.rota}</span>
+            </div>
+            <div class="prato__texto">
+              <p class="prato__rota">{p.rota}</p>
+              <h3>{p.nome}</h3>
+              <p>{p.texto}</p>
+              {p.frase && <p class="prato__frase">“{p.frase}”</p>}
+            </div>
+          </li>
+        ))
+      }
+      <li class="prato prato--fim" data-prato>
+        <Simbolo />
+        <h3>Da casa</h3>
+        <p>Azeites artesanais, pestos e conservas.</p>
+        <p class="prato__destaque">Cardápio do dia e preços pelo WhatsApp</p>
+        <Cta motivo="almoco" local="cardapio">{A_CONFIRMAR.precos}</Cta>
+      </li>
+    </ul>
+  </div>
+</section>

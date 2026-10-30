@@ -1,0 +1,41 @@
+---
+// TODO: revisar este texto com o responsável jurídico antes de publicar.
+import Base from '../layouts/Base.astro';
+import { ENDERECO, SITE, WHATSAPP } from '../config/site';
+import { whatsappLink } from '../lib/whatsapp';
+---
+
+<Base titulo="Política de privacidade | Kangaça, Vila Mariana" descricao="Como o site do Kangaça, na Vila Mariana, São Paulo, usa cookies, o contato pelo WhatsApp e os direitos do titular segundo a LGPD." noindex>
+  <article class="texto-legal">
+    <h1>Política de privacidade</h1>
+    <p>
+      Esta página explica como o site do {SITE.nomeCompleto}, na {ENDERECO.completo}, trata as suas informações, de acordo com a Lei Geral de Proteção de Dados (LGPD, Lei nº 13.709/2018).
+    </p>
+
+    <h2>Cookies de medição e anúncios</h2>
+    <p>
+      Com a sua autorização, usamos ferramentas do Google (Google Analytics e Google Ads) para entender quantas pessoas visitam o site, de onde vieram e se os anúncios funcionam. Essas ferramentas usam cookies e identificadores on-line.
+    </p>
+    <p>
+      Se você clicar em “Recusar”, esses cookies não são gravados e o Google recebe apenas sinais sem cookies, conforme o modo de consentimento do Google. Sua escolha fica guardada neste navegador. Para mudar de ideia, limpe os dados do site no navegador e o aviso aparecerá de novo.
+    </p>
+
+    <h2>Contato pelo WhatsApp</h2>
+    <p>
+      Os botões do site abrem uma conversa no WhatsApp. O formulário de eventos não grava nada no site: ele só monta uma mensagem no seu aparelho, e os dados chegam até nós apenas se você enviar essa mensagem. Usamos essas informações para responder ao seu pedido, como reservas e orçamentos. O WhatsApp tem a sua própria política de privacidade.
+    </p>
+
+    <h2>Mapa</h2>
+    <p>A seção Visite mostra um mapa do Google Maps, que pode coletar dados conforme a política do Google.</p>
+
+    <h2>Seus direitos</h2>
+    <p>
+      Segundo a LGPD, você pode pedir a confirmação de que tratamos seus dados, o acesso, a correção, a anonimização ou a exclusão deles, a informação sobre com quem foram compartilhados e a revogação do consentimento.
+    </p>
+    <p>
+      Para exercer esses direitos, fale com a gente pelo{' '}
+      <a href={whatsappLink('geral')} target="_blank" rel="noopener" data-cta="geral" data-local="privacidade">WhatsApp {WHATSAPP.exibicao}</a>.
+    </p>
+    <p><a href="/">Voltar ao início</a></p>
+  </article>
+</Base>

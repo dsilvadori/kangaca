@@ -1,0 +1,35 @@
+---
+import Img from '../Img.astro';
+import Cta from '../Cta.astro';
+import menu from '../../assets/pratos/menu-mar-e-terra.jpg';
+import { INSTAGRAM } from '../../config/site';
+
+const { titulo = 'Menus temáticos, sob reserva' } = Astro.props;
+---
+
+<section class="secao secao--escura jantares" id="jantares" aria-labelledby="jantares-titulo">
+  <div class="jantares__texto">
+    <p class="sobretitulo">Jantares especiais</p>
+    <h2 id="jantares-titulo" data-split>{titulo}</h2>
+    <p class="lead" data-reveal>
+      De tempos em tempos a casa monta um menu especial, com datas divulgadas no <a href={INSTAGRAM.url} target="_blank" rel="noopener">Instagram</a>.
+    </p>
+    <div class="jantares__exemplo" data-reveal>
+      <h3>Exemplo: menu Mar e Terra</h3>
+      <p>
+        No Dia dos Namorados, das 18h às 23h, a R$ 165 por pessoa: croqueta aberta de salmão curado ou de costela ao vinho, fettuccine ao pesto de coentro e nori ou risoto de linguiça defumada da casa, e escondidinho de morango e coco.
+      </p>
+    </div>
+    <div data-reveal>
+      <Cta motivo="jantar" local="jantares">Reservar um jantar</Cta>
+    </div>
+  </div>
+  <div class="jantares__arte" data-curtain>
+    <Img
+      src={menu}
+      alt="Arte do menu especial Mar e Terra do Dia dos Namorados, com entradas, principais, sobremesa e valor de R$ 165 por pessoa"
+      sizes="(min-width: 640px) 602px, 100vw"
+      nitida
+    />
+  </div>
+</section>

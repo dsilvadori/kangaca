@@ -1,0 +1,15 @@
+---
+// Os três círculos: Ásia, África e Brasil. Só traço, na cor do texto ao redor.
+interface Props {
+  class?: string;
+}
+const { class: classe } = Astro.props;
+---
+
+<svg class:list={['simbolo', classe]} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+  <g fill="none" stroke="currentColor" stroke-width="3">
+    <circle cx="32" cy="22.5" r="11.5"></circle>
+    <circle cx="21" cy="41.5" r="11.5"></circle>
+    <circle cx="43" cy="41.5" r="11.5"></circle>
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+---
+import type { ImageMetadata } from 'astro';
+import Img from '../Img.astro';
+import SeloGoogle from '../SeloGoogle.astro';
+
+interface Props {
+  linhas: string[];
+  sobretitulo: string;
+  texto: string;
+  imagem: ImageMetadata;
+  alt: string;
+}
+
+const { linhas, sobretitulo, texto, imagem, alt } = Astro.props;
+---
+
+<section class="hero hero--campanha" id="topo" data-hero>
+  <div class="hero__fundo" data-hero-fundo>
+    <Img src={imagem} alt={alt} sizes="(min-width: 1024px) min(60vw, 1065px), 100vw" prioridade />
+  </div>
+  <div class="hero__conteudo">
+    <p class="sobretitulo hero__marca">{sobretitulo}</p>
+    <h1 class="hero__titulo">
+      {linhas.map((linha, i) => <span class="linha" style={`--i:${i}`}><span>{linha}</span></span>)}
+    </h1>
+    <p class="hero__sub" style={`--i:${linhas.length}`}>{texto}</p>
+    <div class="hero__acoes" style={`--i:${linhas.length + 1}`}>
+      <slot />
+    </div>
+    <div class="hero__selo" style={`--i:${linhas.length + 2}`}><SeloGoogle /></div>
+  </div>
+</section>

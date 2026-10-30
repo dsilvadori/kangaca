@@ -1,0 +1,40 @@
+---
+// gtag.js com Consent Mode v2. Só entra na página quando há IDs reais em src/config/site.ts.
+import { TRACKING, trackingAtivo, ga4Ativo, adsAtivo } from '../config/site';
+
+const ids = [
+  ...(ga4Ativo() ? [TRACKING.GA4_ID] : []),
+  ...(adsAtivo() ? [TRACKING.GOOGLE_ADS_ID] : []),
+];
+---
+
+{
+  trackingAtivo() && (
+    <>
+      <script is:inline define:vars={{ ids }}>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { dataLayer.push(arguments); };
+        gtag('consent', 'default', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied',
+          wait_for_update: 500,
+        });
+        try {
+          if (localStorage.getItem('kg-consentimento') === 'granted') {
+            gtag('consent', 'update', {
+              ad_storage: 'granted',
+              ad_user_data: 'granted',
+              ad_personalization: 'granted',
+              analytics_storage: 'granted',
+            });
+          }
+        } catch (e) {}
+        gtag('js', new Date());
+        ids.forEach(function (id) { gtag('config', id); });
+      </script>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ids[0]}`} />
+    </>
+  )
+}

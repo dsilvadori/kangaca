@@ -1,0 +1,24 @@
+---
+import Cta from '../Cta.astro';
+import { ENDERECO, GOOGLE, HORARIOS } from '../../config/site';
+---
+
+<section class="secao secao--escura visite" id="visite" aria-labelledby="visite-titulo">
+  <div class="visite__dados">
+    <p class="sobretitulo">Visite</p>
+    <h2 id="visite-titulo" data-split>Restaurante na Vila Mariana, São Paulo</h2>
+    <address class="lead" data-reveal>{ENDERECO.completo}</address>
+    <dl class="visite__horarios" data-reveal>
+      <div><dt>Almoço</dt><dd>{HORARIOS.almoco.diasCurto}, {HORARIOS.almoco.faixa}</dd></div>
+      <div><dt>Noite</dt><dd>{HORARIOS.jantares}</dd></div>
+      <div><dt>Demais dias</dt><dd>{HORARIOS.demaisDias}</dd></div>
+    </dl>
+    <div class="visite__acoes" data-reveal>
+      <a class="btn btn--contorno" href={GOOGLE.url} target="_blank" rel="noopener" data-magnetic>Como chegar</a>
+      <Cta motivo="geral" local="visite">Chamar no WhatsApp</Cta>
+    </div>
+  </div>
+  <div class="visite__mapa">
+    <iframe src={ENDERECO.mapaEmbed} title={`Mapa: ${ENDERECO.completo}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>

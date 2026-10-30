@@ -1,0 +1,33 @@
+---
+import Img from '../Img.astro';
+import cortinas from '../../assets/fotos/jardim-cortinas.jpg';
+import quintal from '../../assets/fotos/jardim-quintal.jpg';
+import fachada from '../../assets/fotos/fachada-com-clientes.jpg';
+---
+
+<section class="secao secao--escura casa" id="casa" aria-labelledby="casa-titulo">
+  <div class="casa__texto">
+    <p class="sobretitulo">A casa</p>
+    <h2 id="casa-titulo" data-split>Um canto de quintal e praia na Vila Mariana</h2>
+    <p class="lead" data-reveal>
+      Uma casa com jardim pensado como um canto de quintal e praia, com cortinas claras, plantas e mesas ao ar livre. Na fachada, a porta de aço turquesa com o logo pintado é a nossa marca registrada.
+    </p>
+  </div>
+  <div class="casa__fotos">
+    <div class="casa__foto casa__foto--a" data-parallax="-6">
+      <div data-curtain>
+        <Img src={cortinas} alt="Jardim do Kangaça com cortinas claras abertas, samambaias e mesa branca sobre piso de cacos de cerâmica" sizes="(min-width: 1024px) min(52vw, 730px), 100vw" />
+      </div>
+    </div>
+    <div class="casa__foto casa__foto--b" data-parallax="8">
+      <div data-curtain>
+        <Img src={quintal} alt="Quintal do Kangaça com mesinhas brancas, sofá azul, plantas penduradas e piso de tijolo" sizes="(min-width: 1024px) min(36vw, 510px), 50vw" />
+      </div>
+    </div>
+    <div class="casa__foto casa__foto--c" data-parallax="-3">
+      <div data-curtain>
+        <Img src={fachada} alt="Fachada do Kangaça ao entardecer, com placa redonda azul e pessoas nas mesas sob as plantas" sizes="(min-width: 1024px) min(30vw, 420px), 50vw" />
+      </div>
+    </div>
+  </div>
+</section>

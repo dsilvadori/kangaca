@@ -1,0 +1,14 @@
+---
+import { GOOGLE } from '../config/site';
+
+interface Props {
+  completo?: boolean;
+}
+const { completo = false } = Astro.props;
+---
+
+<a class:list={['selo-google', { 'selo-google--grande': completo }]} href={GOOGLE.url} target="_blank" rel="noopener">
+  <strong>{GOOGLE.nota}</strong>
+  <span aria-hidden="true">★</span>
+  <span>no Google{completo && ` · ${GOOGLE.avaliacoes} avaliações`}</span>
+</a>

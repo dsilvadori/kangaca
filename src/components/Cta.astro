@@ -1,0 +1,26 @@
+---
+import IconeWhatsapp from './IconeWhatsapp.astro';
+import { whatsappLink, type Motivo } from '../lib/whatsapp';
+
+interface Props {
+  motivo: Motivo;
+  local: string;
+  variante?: 'primario' | 'contorno';
+  class?: string;
+}
+
+const { motivo, local, variante = 'primario', class: classe } = Astro.props;
+---
+
+<a
+  class:list={['btn', `btn--${variante}`, classe]}
+  href={whatsappLink(motivo)}
+  target="_blank"
+  rel="noopener"
+  data-cta={motivo}
+  data-local={local}
+  data-magnetic
+>
+  <IconeWhatsapp />
+  <span><slot /></span>
+</a>

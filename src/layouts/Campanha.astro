@@ -1,0 +1,39 @@
+---
+// Página de destino de um grupo de anúncios: resumo da casa, Bia, avaliações e endereço vêm da home.
+import Base from './Base.astro';
+import Onda from '../components/Onda.astro';
+import Casa from '../components/secoes/Casa.astro';
+import Bia from '../components/secoes/Bia.astro';
+import Avaliacoes from '../components/secoes/Avaliacoes.astro';
+import Visite from '../components/secoes/Visite.astro';
+import { breadcrumb } from '../lib/jsonld';
+
+interface Props {
+  titulo: string;
+  descricao: string;
+  caminho: string;
+  nome: string;
+}
+
+const { titulo, descricao, caminho, nome } = Astro.props;
+---
+
+<Base titulo={titulo} descricao={descricao} caminho={caminho} jsonLd={[breadcrumb(nome, caminho)]} logoFixo>
+  <slot name="hero" />
+  <Onda de="escuro" para="claro" />
+  <slot />
+  <Onda de="claro" para="escuro" />
+  <Casa />
+  <Onda de="escuro" para="claro" />
+  <Bia />
+  <Onda de="claro" para="escuro" />
+  <Avaliacoes />
+  <Onda de="escuro" para="claro" />
+  <section class="secao secao--clara volta-home" aria-labelledby="volta-home-titulo">
+    <h2 id="volta-home-titulo">Conheça o Kangaça inteiro</h2>
+    <p>Cardápio, almoço, jantares, eventos e a história da casa.</p>
+    <a class="btn btn--contorno btn--escuro" href="/">Ir para a página inicial</a>
+  </section>
+  <Onda de="claro" para="escuro" />
+  <Visite />
+</Base>

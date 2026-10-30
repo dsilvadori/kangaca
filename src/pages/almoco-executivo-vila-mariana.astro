@@ -1,0 +1,27 @@
+---
+import Campanha from '../layouts/Campanha.astro';
+import HeroCampanha from '../components/secoes/HeroCampanha.astro';
+import Almoco from '../components/secoes/Almoco.astro';
+import Cta from '../components/Cta.astro';
+import jardim from '../assets/fotos/jardim-cortinas.jpg';
+import { HORARIOS } from '../config/site';
+---
+
+<Campanha
+  titulo="Almoço executivo na Vila Mariana, São Paulo | Kangaça"
+  descricao="Almoço executivo na Vila Mariana, São Paulo: entrada, prato, sobremesa e suco cozido, de terça a sexta, das 11h30 às 15h. Veja o cardápio de hoje."
+  caminho="/almoco-executivo-vila-mariana/"
+  nome="Almoço executivo"
+>
+  <HeroCampanha
+    slot="hero"
+    sobretitulo={`${HORARIOS.almoco.dias}, ${HORARIOS.almoco.faixa}`}
+    linhas={['Almoço executivo', 'na Vila Mariana']}
+    texto="Comida caseira sem fronteiras: entrada, prato principal, sobremesa e suco cozido, com sabores que conectam Brasil, África e Ásia."
+    imagem={jardim}
+    alt="Jardim do Kangaça com cortinas claras abertas, samambaias e mesa branca"
+  >
+    <Cta motivo="almoco" local="hero-almoco">Ver o cardápio de hoje</Cta>
+  </HeroCampanha>
+  <Almoco titulo="O que vem no almoço" />
+</Campanha>

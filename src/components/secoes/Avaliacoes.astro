@@ -1,0 +1,73 @@
+---
+import SeloGoogle from '../SeloGoogle.astro';
+import { avaliacoes, maisElogiados } from '../../data/avaliacoes';
+import { GOOGLE } from '../../config/site';
+
+const [destaque, ...demais] = avaliacoes;
+const estrela = 'M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5l-5.9 3.1 1.2-6.5L2.5 9.5l6.6-.9z';
+---
+
+<section class="secao secao--escura avaliacoes" aria-labelledby="avaliacoes-titulo">
+  <div class="avaliacoes__cabeca">
+    <div>
+      <p class="sobretitulo">Avaliações do Google</p>
+      <h2 id="avaliacoes-titulo" data-split>Quem provou, conta</h2>
+    </div>
+    <SeloGoogle completo />
+  </div>
+
+  <figure class="avaliacoes__destaque">
+    <div class="estrelas" role="img" aria-label="5 de 5 estrelas" data-estrelas>
+      {
+        [0, 1, 2, 3, 4].map(() => (
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true" focusable="false" data-estrela>
+            <path d={estrela} />
+          </svg>
+        ))
+      }
+    </div>
+    <blockquote data-reveal>
+      <p class="avaliacoes__chamada">“{destaque.destaque}”</p>
+      <p>{destaque.texto}</p>
+    </blockquote>
+    <figcaption data-reveal>
+      <span>{[destaque.autor, destaque.data].filter(Boolean).join(', ')}</span>
+      <ul class="selinhos">{destaque.criterios?.map((c) => <li>{c}</li>)}</ul>
+    </figcaption>
+  </figure>
+
+  <div class="carrossel" data-carrossel>
+    <div class="carrossel__setas">
+      <button type="button" aria-label="Avaliação anterior" data-carrossel-seta="-1">←</button>
+      <button type="button" aria-label="Próxima avaliação" data-carrossel-seta="1">→</button>
+    </div>
+    <ul class="carrossel__trilha" tabindex="0" aria-label="Mais avaliações do Google" data-carrossel-trilha>
+      {
+        demais.map((a) => (
+          <li class="cartao">
+            <div class="estrelas estrelas--pequenas" role="img" aria-label={`${a.nota} de 5 estrelas`}>
+              {[0, 1, 2, 3, 4].map(() => (
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false">
+                  <path d={estrela} />
+                </svg>
+              ))}
+            </div>
+            {a.destaque && <p class="cartao__chamada">{a.destaque}</p>}
+            <blockquote>{a.texto}</blockquote>
+            <p class="cartao__autor">
+              {[a.autor, a.data].filter(Boolean).join(', ')}{a.contexto && ` · ${a.contexto}`}
+            </p>
+            {a.criterios && <ul class="selinhos">{a.criterios.map((c) => <li>{c}</li>)}</ul>}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="avaliacoes__elogiados" data-reveal>
+    <h3>Os mais elogiados</h3>
+    <ul class="selinhos selinhos--pratos">{maisElogiados.map((p) => <li>{p}</li>)}</ul>
+  </div>
+
+  <a class="btn btn--contorno" href={GOOGLE.url} target="_blank" rel="noopener" data-magnetic>Ver todas no Google</a>
+</section>

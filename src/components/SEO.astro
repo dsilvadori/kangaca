@@ -1,0 +1,47 @@
+---
+import { SEO as PADRAO, SITE } from '../config/site';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  imagem?: string;
+  caminho?: string;
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+
+const {
+  titulo = PADRAO.titulo,
+  descricao = PADRAO.descricao,
+  imagem = PADRAO.imagemOg,
+  caminho = Astro.url.pathname,
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+const canonical = new URL(caminho, Astro.site).href;
+const imagemAbsoluta = new URL(imagem, Astro.site).href;
+---
+
+<title>{titulo}</title>
+<meta name="description" content={descricao} />
+{noindex && <meta name="robots" content="noindex" />}
+<link rel="canonical" href={canonical} />
+<meta name="theme-color" content="#0E464D" />
+{PADRAO.searchConsole && <meta name="google-site-verification" content={PADRAO.searchConsole} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:site_name" content={SITE.nomeCompleto} />
+<meta property="og:title" content={titulo} />
+<meta property="og:description" content={descricao} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imagemAbsoluta} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={titulo} />
+<meta name="twitter:description" content={descricao} />
+<meta name="twitter:image" content={imagemAbsoluta} />
+
+{jsonLd.map((dado) => <script is:inline type="application/ld+json" set:html={JSON.stringify(dado)} />)}

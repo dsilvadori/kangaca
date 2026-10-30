@@ -1,0 +1,24 @@
+---
+import IconeWhatsapp from './IconeWhatsapp.astro';
+import { whatsappLink } from '../lib/whatsapp';
+---
+
+<a
+  class="flutuante"
+  href={whatsappLink('geral')}
+  target="_blank"
+  rel="noopener"
+  aria-label="Conversar com o Kangaça pelo WhatsApp"
+  data-cta="geral"
+  data-local="flutuante"
+>
+  <IconeWhatsapp />
+</a>
+
+<div class="barra" data-barra>
+  <a class="btn btn--primario" href={whatsappLink('reserva')} target="_blank" rel="noopener" data-cta="reserva" data-local="barra">
+    <IconeWhatsapp />
+    <span>Reservar</span>
+  </a>
+  <a class="btn btn--contorno" href="/#orcamento" data-cta="evento" data-local="barra">Eventos</a>
+</div>

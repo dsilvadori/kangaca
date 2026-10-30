@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Onda from '../components/Onda.astro';
+import Hero from '../components/secoes/Hero.astro';
+import Marquee from '../components/secoes/Marquee.astro';
+import Conceito from '../components/secoes/Conceito.astro';
+import Cardapio from '../components/secoes/Cardapio.astro';
+import Almoco from '../components/secoes/Almoco.astro';
+import Jantares from '../components/secoes/Jantares.astro';
+import Eventos from '../components/secoes/Eventos.astro';
+import Casa from '../components/secoes/Casa.astro';
+import Bia from '../components/secoes/Bia.astro';
+import Avaliacoes from '../components/secoes/Avaliacoes.astro';
+import Instagram from '../components/secoes/Instagram.astro';
+import Visite from '../components/secoes/Visite.astro';
+import { restaurante, webSite } from '../lib/jsonld';
+---
+
+<Base home jsonLd={[restaurante, webSite]}>
+  <Hero />
+  <Marquee />
+  <Onda de="escuro" para="claro" />
+  <Conceito />
+  <Onda de="claro" para="escuro" />
+  <Cardapio />
+  <Onda de="escuro" para="claro" />
+  <Almoco />
+  <Onda de="claro" para="escuro" />
+  <Jantares />
+  <Onda de="escuro" para="claro" />
+  <Eventos />
+  <Onda de="claro" para="escuro" />
+  <Casa />
+  <Onda de="escuro" para="claro" />
+  <Bia />
+  <Onda de="claro" para="escuro" />
+  <Avaliacoes />
+  <Onda de="escuro" para="claro" />
+  <Instagram />
+  <Onda de="claro" para="escuro" />
+  <Visite />
+</Base>

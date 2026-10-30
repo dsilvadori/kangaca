@@ -1,0 +1,62 @@
+---
+const orbes = [
+  { nome: 'Brasil', frase: 'A comida popular, a rua e o quintal.', cor: 'profundo' },
+  { nome: 'África', frase: 'A ancestralidade, o fogo e os saberes de herança.', cor: 'terracota' },
+  { nome: 'Ásia', frase: 'O umami e as cozinhas de rua, além de Japão, China e Coreia.', cor: 'turquesa' },
+];
+
+const cores = [
+  { nome: 'Turquesa', cor: 'turquesa', texto: 'Os mares e as travessias de povos e especiarias.' },
+  { nome: 'Bege', cor: 'bege', texto: 'A terra à vista, os portos de chegada e partida.' },
+  { nome: 'Terracota', cor: 'terracota', texto: 'A terra, o fogo e a ancestralidade.' },
+];
+---
+
+<section class="secao secao--clara conceito" aria-labelledby="conceito-titulo">
+  <div class="conceito__palco" data-conceito>
+    <div class="conceito__cabeca">
+      <p class="sobretitulo">O conceito</p>
+      <h2 id="conceito-titulo" data-split>Cozinha de encontros</h2>
+    </div>
+    <svg class="conceito__circulos" viewBox="0 0 800 420" aria-hidden="true" focusable="false">
+      <g fill="none" stroke-width="3">
+        <circle class="c-turquesa" data-circulo="topo" cx="400" cy="130" r="100" pathLength="1"></circle>
+        <circle class="c-profundo" data-circulo="esquerda" cx="310" cy="286" r="100" pathLength="1"></circle>
+        <circle class="c-terracota" data-circulo="direita" cx="490" cy="286" r="100" pathLength="1"></circle>
+      </g>
+    </svg>
+    <ul class="conceito__orbes">
+      {
+        orbes.map((o) => (
+          <li data-orbe>
+            <h3><span class:list={['ponto', `ponto--${o.cor}`]} />{o.nome}</h3>
+            <p>{o.frase}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="conceito__texto">
+    <p class="lead" data-reveal>
+      O Kangaça é um projeto gastronômico autoral que nasce do encontro entre Brasil, África e Ásia, valorizando a ancestralidade, a comida popular e as trocas culturais que transformaram a maneira como o mundo se alimenta.
+    </p>
+    <p data-reveal>
+      Mais do que fusão, é uma cozinha de encontros e travessias: resgata técnicas, ingredientes e saberes tradicionais para criar uma gastronomia contemporânea, acessível, criativa e cheia de identidade. Arrozes, vegetais, proteínas, angus, pastas de temperos, molhos encorpados, pestos, azeites artesanais e conservas são os protagonistas, com inspiração nas cozinhas de rua e nas tradições africanas, brasileiras e asiáticas.
+    </p>
+  </div>
+
+  <ul class="cores">
+    {
+      cores.map((c) => (
+        <li data-reveal>
+          <span class:list={['cores__amostra', `ponto--${c.cor}`]} />
+          <div>
+            <h3>{c.nome}</h3>
+            <p>{c.texto}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

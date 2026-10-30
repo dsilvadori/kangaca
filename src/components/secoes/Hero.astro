@@ -1,0 +1,39 @@
+---
+import Img from '../Img.astro';
+import Cta from '../Cta.astro';
+import SeloGoogle from '../SeloGoogle.astro';
+import porta from '../../assets/fotos/porta-turquesa-logo.jpg';
+import logo from '../../assets/logo/kangaca-logo-bege.png';
+import assinatura from '../../assets/logo/cozinha-de-encontros-bege.png';
+import { SITE } from '../../config/site';
+---
+
+<section class="hero" id="topo" data-hero>
+  <div class="hero__fundo" data-hero-fundo>
+    <Img
+      src={porta}
+      alt="Porta de aço turquesa do Kangaça, com o logo e a assinatura Cozinha de encontros pintados em bege, iluminada à noite"
+      sizes="(min-width: 1024px) min(60vw, 1065px), 100vw"
+      prioridade
+    />
+  </div>
+  <div class="hero__conteudo">
+    <div class="hero__marca">
+      <img class="hero__logo" src={logo.src} alt="Kangaça" width={logo.width} height={logo.height} />
+      <img class="hero__assinatura" src={assinatura.src} alt={SITE.assinatura} width={assinatura.width} height={assinatura.height} />
+    </div>
+    <h1 class="hero__titulo">
+      <span class="linha" style="--i:0"><span>Brasil, África e Ásia</span></span>
+      <span class="linha" style="--i:1"><span>no mesmo prato,</span></span>
+      <span class="linha" style="--i:2"><span>na Vila Mariana</span></span>
+    </h1>
+    <p class="hero__sub" style="--i:3">
+      {SITE.descritor} Almoço executivo de terça a sexta, jantares sob reserva e eventos.
+    </p>
+    <div class="hero__acoes" style="--i:4">
+      <Cta motivo="reserva" local="hero">Reservar pelo WhatsApp</Cta>
+      <a class="btn btn--contorno" href="#orcamento" data-cta="evento" data-local="hero" data-magnetic>Orçar um evento</a>
+    </div>
+    <div class="hero__selo" style="--i:5"><SeloGoogle /></div>
+  </div>
+</section>

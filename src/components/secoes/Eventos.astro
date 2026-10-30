@@ -1,0 +1,93 @@
+---
+import Img from '../Img.astro';
+import Cta from '../Cta.astro';
+import foto from '../../assets/pratos/evento-buffet-finger-food.jpg';
+
+const { titulo = 'O Kangaça cozinha no seu evento, ou seu evento acontece aqui em casa.' } = Astro.props;
+
+const incluso = [
+  { texto: 'Cardápio personalizado', icone: 'M5 3h14v18H5zM9 8h6M9 12h6M9 16h4' },
+  { texto: 'Drinks e bebidas', icone: 'M5 4h14l-7 8zM12 12v8M8 20h8' },
+  { texto: 'Montagem da mesa', icone: 'M3 9h18M5 9v11M19 9v11M12 9V5' },
+  { texto: 'Produção e serviço', icone: 'M4 14a8 8 0 0 1 16 0zM2 18h20M12 6V4' },
+];
+
+const tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'];
+---
+
+<section class="secao secao--clara eventos" id="eventos" aria-labelledby="eventos-titulo">
+  <div class="eventos__intro">
+    <div class="eventos__texto">
+      <p class="sobretitulo">Buffet para eventos em São Paulo</p>
+      <h2 id="eventos-titulo" data-split>{titulo}</h2>
+      <p class="lead" data-reveal>Buffet, finger foods, drinks e doces, do jeito do seu encontro.</p>
+      <ul class="eventos__lista">
+        {
+          incluso.map((item) => (
+            <li data-reveal>
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d={item.icone} />
+              </svg>
+              {item.texto}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="eventos__foto" data-curtain>
+      <Img src={foto} alt="Equipe do Kangaça montando uma mesa de finger foods em um evento" sizes="(min-width: 480px) 336px, 100vw" />
+    </div>
+  </div>
+
+  <form class="orcamento" id="orcamento" data-orcamento novalidate>
+    <h3>Peça seu orçamento</h3>
+    <p class="orcamento__intro">Preencha e sua mensagem chega pronta no WhatsApp.</p>
+
+    <div class="campo">
+      <label for="ev-nome">Nome</label>
+      <input id="ev-nome" name="nome" type="text" autocomplete="name" required aria-describedby="ev-nome-erro" />
+      <p class="campo__erro" id="ev-nome-erro"></p>
+    </div>
+
+    <div class="campo">
+      <label for="ev-tipo">Tipo de evento</label>
+      <select id="ev-tipo" name="tipo" required aria-describedby="ev-tipo-erro">
+        <option value="">Selecione</option>
+        {tipos.map((t) => <option>{t}</option>)}
+      </select>
+      <p class="campo__erro" id="ev-tipo-erro"></p>
+    </div>
+
+    <div class="campo">
+      <label for="ev-data">Data</label>
+      <input id="ev-data" name="data" type="date" required aria-describedby="ev-data-erro" />
+      <p class="campo__erro" id="ev-data-erro"></p>
+    </div>
+
+    <div class="campo">
+      <label for="ev-convidados">Número de convidados</label>
+      <input id="ev-convidados" name="convidados" type="number" min="1" inputmode="numeric" required aria-describedby="ev-convidados-erro" />
+      <p class="campo__erro" id="ev-convidados-erro"></p>
+    </div>
+
+    <fieldset class="campo campo--largo" aria-describedby="ev-local-erro">
+      <legend>Onde vai ser?</legend>
+      <div class="campo__opcoes">
+        <label><input type="radio" name="local" value="Na casa do Kangaça" required /> Na casa do Kangaça</label>
+        <label><input type="radio" name="local" value="No meu local" /> No meu local</label>
+      </div>
+      <p class="campo__erro" id="ev-local-erro"></p>
+    </fieldset>
+
+    <div class="campo campo--largo">
+      <label for="ev-obs">Observações <span>(opcional)</span></label>
+      <textarea id="ev-obs" name="observacoes" rows="3"></textarea>
+    </div>
+
+    <div class="orcamento__acoes">
+      <button class="btn btn--primario" type="submit" data-magnetic>Enviar pelo WhatsApp</button>
+      <Cta motivo="evento" local="formulario" variante="contorno" class="btn--escuro">Prefiro conversar direto</Cta>
+    </div>
+    <p class="orcamento__status" role="status" data-orcamento-status></p>
+  </form>
+</section>
