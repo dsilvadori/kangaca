@@ -13,6 +13,9 @@ export const SITE = {
   // TODO: confirmar domínio (manter igual ao `site` do astro.config.mjs e ao public/robots.txt)
   dominio: 'https://kangaca.com.br',
   chef: 'Beatriz Souza',
+  // Ouvido por leitores de tela e leitura em voz alta logo depois do título da home.
+  resumo:
+    'O Kangaça é um restaurante autoral na Vila Mariana, em São Paulo, onde Brasil, África e Ásia se encontram. É uma cozinha de encontros e travessias, que resgata técnicas, ingredientes e saberes tradicionais para criar uma gastronomia contemporânea, acessível e cheia de identidade. A casa serve almoço executivo de terça a sexta, faz jantares especiais sob reserva e cuida de eventos e buffet.',
 } as const;
 
 export const SEO = {
