@@ -609,7 +609,9 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
   transform: scaleX(1);
 }
 
+/* Abaixo de 1024 px quem cumpre esse papel é a barra fixa de baixo */
 .header__cta {
+  display: none;
   padding: 0.4rem 1rem;
   font-size: 0.95rem;
 }
@@ -1882,6 +1884,10 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
   .menu,
   .barra {
     display: none;
+  }
+
+  .header__cta {
+    display: inline-flex;
   }
 
   .flutuante {
