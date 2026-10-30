@@ -859,6 +859,10 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
   flex: none;
 }
 
+.marquee__grupo li::before {
+  content: attr(data-texto);
+}
+
 .marquee__grupo li {
   display: flex;
   align-items: center;

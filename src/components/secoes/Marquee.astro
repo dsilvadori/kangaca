@@ -4,15 +4,14 @@ import Simbolo from '../Simbolo.astro';
 const ingredientes = ['arroz', 'dendê', 'gohan', 'missô', 'coco', 'manga', 'coentro', 'pernil', 'tamarindo', 'azeites da casa', 'conservas'];
 ---
 
-<!-- Faixa decorativa: fica de fora da leitura em voz alta. -->
+<!-- Faixa decorativa: o texto vem do CSS (data-texto) para nem a leitura em voz alta do celular pegar. -->
 <div class="marquee" aria-hidden="true" data-marquee>
   <div class="marquee__trilha" data-marquee-trilha>
     {
       [0, 1].map((copia) => (
         <ul class="marquee__grupo" aria-hidden={copia === 1 ? 'true' : undefined}>
           {ingredientes.map((item) => (
-            <li>
-              {item}
+            <li data-texto={item}>
               <Simbolo />
             </li>
           ))}
