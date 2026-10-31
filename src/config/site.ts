@@ -9,19 +9,19 @@ export const SITE = {
   nomeCompleto: 'Kangaça · Cozinha de Encontros',
   assinatura: 'Cozinha de encontros',
   conceito: 'Tradição em movimento.',
-  descritor: 'Cozinha afro-brasileira com umami asiático.',
+  descritor: 'Cozinha de fusão: comida de sustância, pesquisa e comunhão.',
   // TODO: confirmar domínio (manter igual ao `site` do astro.config.mjs e ao public/robots.txt)
   dominio: 'https://kangaca.com.br',
   chef: 'Beatriz Souza',
   // Ouvido por leitores de tela e leitura em voz alta logo depois do título da home.
   resumo:
-    'O Kangaça é um restaurante autoral na Vila Mariana, em São Paulo, onde Brasil, África e Ásia se encontram. É uma cozinha de encontros e travessias, que resgata técnicas, ingredientes e saberes tradicionais para criar uma gastronomia contemporânea, acessível e cheia de identidade. A casa serve almoço executivo de terça a sexta, faz jantares especiais sob reserva e cuida de eventos e buffet.',
+    'O Kangaça é um restaurante autoral na Vila Mariana, em São Paulo: uma cozinha de fusão Brasil, África e Ásia. Nasce da curiosidade e da pesquisa da chef Bia Souza sobre o que essas culturas têm em comum, como a comunhão ao redor da mesa, as técnicas tradicionais e a comida de sustância. A casa serve almoço executivo de terça a sexta, faz jantares especiais sob reserva e cuida de eventos e buffet.',
 } as const;
 
 export const SEO = {
   titulo: 'Kangaça | Restaurante na Vila Mariana, São Paulo',
   descricao:
-    'Restaurante autoral na Vila Mariana, São Paulo: cozinha afro-brasileira com umami asiático. Almoço executivo, jantares sob reserva e buffet para eventos.',
+    'Restaurante autoral na Vila Mariana, São Paulo: cozinha de fusão afro-brasileira e asiática. Almoço executivo, jantares sob reserva e buffet para eventos.',
   imagemOg: '/og-image.jpg',
   logo: '/icons/logo-kangaca.png',
   // Faixa citada pelos clientes no Google.

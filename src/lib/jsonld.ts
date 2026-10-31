@@ -4,7 +4,7 @@ const absoluto = (caminho: string) => new URL(caminho, SITE.dominio).href;
 const ID_RESTAURANTE = absoluto('/#restaurante');
 const ID_SITE = absoluto('/#site');
 
-const bia = { '@type': 'Person', name: SITE.chef, jobTitle: 'Chef' };
+const bia = { '@type': 'Person', name: SITE.chef, jobTitle: 'Chef e entusiasta de comida afrodiaspórica e asiática' };
 
 export const restaurante = {
   '@context': 'https://schema.org',
@@ -27,7 +27,7 @@ export const restaurante = {
   ...(SEO.geo.latitude && SEO.geo.longitude
     ? { geo: { '@type': 'GeoCoordinates', latitude: SEO.geo.latitude, longitude: SEO.geo.longitude } }
     : {}),
-  servesCuisine: ['Afro-brasileira', 'Asiática', 'Autoral'],
+  servesCuisine: ['Fusão', 'Afro-brasileira', 'Asiática', 'Autoral'],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: HORARIOS.almoco.schema.dias,
