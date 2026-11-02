@@ -4,7 +4,7 @@ const absoluto = (caminho: string) => new URL(caminho, SITE.dominio).href;
 const ID_RESTAURANTE = absoluto('/#restaurante');
 const ID_SITE = absoluto('/#site');
 
-const bia = { '@type': 'Person', name: SITE.chef, jobTitle: 'Chef e entusiasta de comida afrodiaspórica e asiática' };
+const bia = { '@type': 'Person', name: SITE.chef, jobTitle: 'Chef, ativista pela Soberania Alimentar e entusiasta de comida afrodiaspórica e asiática' };
 
 export const restaurante = {
   '@context': 'https://schema.org',
