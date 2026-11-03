@@ -5,3 +5,4 @@ dist/
 .env
 .DS_Store
 worker/worker-configuration.d.ts
+.dev.vars

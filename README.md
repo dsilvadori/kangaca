@@ -68,51 +68,47 @@ Preencha `GOOGLE_ADS_ID`, `GOOGLE_ADS_CONVERSION_LABEL` e `GA4_ID` em `src/confi
 - O envio do formulário de eventos dispara também `generate_lead`.
 - O consentimento começa negado (Consent Mode v2) e muda para concedido quando a pessoa clica em "Aceitar".
 
-## Leads de eventos (mini CRM)
+## Leads de eventos (planilha)
 
-Cada envio do formulário de eventos é gravado num banco D1 do Cloudflare antes de abrir o WhatsApp. Se a gravação falhar, o WhatsApp abre do mesmo jeito. A equipe acompanha os pedidos em `/painel`, que fica protegido pelo Cloudflare Access.
+Cada envio do formulário de eventos vira uma linha numa Google Sheet antes de abrir o WhatsApp. Se o envio falhar, o WhatsApp abre do mesmo jeito. O caminho é formulário → Worker (`/api/leads`) → Apps Script → planilha. Nada fica guardado no Cloudflare.
 
-- **`worker/`:** o Worker que atende `/api/leads` (recebe o formulário) e `/painel` (lista, status, anotações, exclusão e CSV). O resto do site continua estático.
-- **`migrations/`:** estrutura da tabela `leads`.
-- **Proteção contra spam:** campo escondido no formulário e no máximo 5 pedidos por IP a cada hora.
-- **Status:** Novo → Orçado → Fechado ou Perdido. Ao marcar "Fechado", informe o valor: ele vai para o CSV de conversões do Google Ads.
+- **`worker/`:** valida o pedido, barra robôs (campo escondido e no máximo 5 envios por minuto por IP) e repassa para a planilha.
+- **`apps-script/planilha-leads.gs`:** o script da planilha. Monta a aba `Leads`, grava cada pedido e põe o WhatsApp como link que abre a conversa com uma mensagem pronta.
+- **Na planilha:** a equipe muda o **Status** (Novo, Em conversa, Orçado, Fechado, Perdido), anota o **Valor fechado** e escreve em **Anotações**. Para atender a um pedido de exclusão, apague a linha.
 
 ### Configuração (uma vez só)
 
-Enquanto o `database_id` do `wrangler.jsonc` estiver zerado, o deploy falha. Faça os passos 1 e 2 antes do próximo `git push`.
+1. **Crie a planilha.** No Google Drive da conta do Kangaça, crie uma planilha chamada `Leads Kangaça` e compartilhe com quem vai atender.
+2. **Cole o script.** Na planilha, abra **Extensões > Apps Script**. Apague o conteúdo do `Código.gs`, cole o conteúdo de `apps-script/planilha-leads.gs` e salve.
+3. **Crie o token.** Gere um código aleatório com `openssl rand -hex 24`. No Apps Script, vá em **Configurações do projeto** (engrenagem) **> Propriedades do script > Adicionar propriedade**, com o nome `TOKEN` e o código como valor.
+4. **Monte a aba.** No editor, escolha a função `prepararPlanilha` e clique em **Executar**. O Google pede autorização: entre com a conta do Kangaça e, se aparecer "app não verificado", clique em **Avançado > Acessar**.
+5. **Publique o script.** Clique em **Implantar > Nova implantação > Tipo: App da Web** e configure:
+   - **Executar como:** Eu
+   - **Quem pode acessar:** Qualquer pessoa
 
-1. Crie o banco e a tabela:
-   ```bash
-   npx wrangler login
-   npx wrangler d1 create kangaca-leads
-   ```
-   Copie o `database_id` que aparecer para o `wrangler.jsonc` e rode:
-   ```bash
-   npx wrangler d1 migrations apply kangaca-leads --remote
-   ```
-2. Faça o deploy (`git push` ou `npx wrangler deploy`). O domínio `kangaca.com.br` precisa estar ligado ao Worker em Settings > Domains & Routes.
-3. Proteja o painel no Cloudflare Zero Trust (plano Free):
-   - Em **Settings > Authentication > Login methods**, deixe ativo o **One-time PIN**, que manda um código por e-mail (ou adicione o login com Google).
-   - Em **Access > Applications > Add an application > Self-hosted**, use o nome `Painel Kangaça`, o domínio `kangaca.com.br` e o caminho `painel`.
-   - Crie a política **Allow** com **Include > Emails** e os e-mails da equipe com acesso ao painel.
-   - Na aplicação criada, copie o **Application Audience (AUD) Tag**. Em **Settings > Custom Pages**, veja o seu **team domain** (`algo.cloudflareaccess.com`).
-4. Cole os dois valores em `ACCESS_TEAM_DOMAIN` e `ACCESS_AUD` no `wrangler.jsonc` e publique de novo. Com eles vazios, o painel responde "Acesso restrito" para todo mundo.
+   Copie a **URL do app da Web**, que termina em `/exec`.
+6. **Ligue o Worker à planilha.** No Cloudflare, vá em **Workers & Pages > kangaca > Settings > Variables and Secrets** e adicione dois itens do tipo **Secret**:
+   - `PLANILHA_URL`: a URL do passo 5
+   - `PLANILHA_TOKEN`: o mesmo código do passo 3
 
-Para dar ou tirar acesso depois, edite só a política do Access. O Worker confere o token do Access em todo pedido ao painel, então o endereço `*.workers.dev`, que fica fora do Access, não abre o painel.
+   Se preferir o terminal, use `npx wrangler secret put PLANILHA_URL` e `npx wrangler secret put PLANILHA_TOKEN`.
+7. **Teste.** Envie um pedido pelo formulário do site. A linha deve aparecer na planilha em alguns segundos.
+
+Se mudar o script depois, publique de novo em **Implantar > Gerenciar implantações > editar (lápis) > Versão: Nova versão**. Assim a URL continua a mesma.
 
 ### Conversões off-line no Google Ads
 
-O botão "Conversões para o Google Ads (CSV)" do painel gera o arquivo no formato de importação do Google Ads, só com os leads **fechados** que vieram de anúncio (com `gclid`).
+As colunas `gclid` e **Valor fechado** permitem informar ao Google Ads quais cliques viraram evento fechado.
 
-1. No Google Ads, vá em **Metas > Conversões > Nova ação de conversão > Importar > Cliques de CRMs, arquivos ou outras fontes**. Escolha a categoria **Lead convertido** e use o nome **`Evento fechado`**, exatamente assim.
-2. Uma vez por semana, baixe o CSV no painel e envie em **Metas > Conversões > Uploads**. O Google ignora cliques repetidos e cliques com mais de 90 dias.
+1. No Google Ads, crie a ação em **Metas > Conversões > Nova ação de conversão > Importar > Cliques de CRMs, arquivos ou outras fontes**, com a categoria **Lead convertido** e o nome `Evento fechado`.
+2. Para enviar, filtre a planilha por Status = Fechado com `gclid` preenchido e monte o arquivo no modelo do próprio Google Ads.
+3. Envie o arquivo em **Metas > Conversões > Uploads**.
 
 ### Desenvolvimento
 
 ```bash
 npm run build
-npx wrangler d1 migrations apply kangaca-leads --local
 npx wrangler dev
 ```
 
-Depois de mudar o `wrangler.jsonc`, rode `npm run worker:tipos` e `npm run worker:check`.
+Para testar o envio localmente, crie um arquivo `.dev.vars` com `PLANILHA_URL=...` e `PLANILHA_TOKEN=...`. Ele já fica fora do git. Depois de mudar o `wrangler.jsonc`, rode `npm run worker:tipos` e `npm run worker:check`.

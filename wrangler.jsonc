@@ -2,26 +2,21 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "kangaca",
   "compatibility_date": "2026-10-30",
-  // O Worker só atende /api/* e /painel*. Todo o resto são os arquivos estáticos do Astro.
+  // O Worker só atende /api/*. Todo o resto são os arquivos estáticos do Astro.
   "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/api/*", "/painel", "/painel/*"]
+    "run_worker_first": ["/api/*"]
   },
-  "d1_databases": [
+  // Até 5 pedidos de orçamento por minuto vindos do mesmo IP.
+  "ratelimits": [
     {
-      "binding": "DB",
-      "database_name": "kangaca-leads",
-      "database_id": "4fb4b7b0-fb57-45c5-8caa-7e50f9a7aae3",
-      "migrations_dir": "migrations"
+      "name": "LIMITE_LEADS",
+      "namespace_id": "1001",
+      "simple": { "limit": 5, "period": 60 }
     }
-  ],
-  "vars": {
-    // TODO: preencher depois de criar a aplicação no Cloudflare Access (veja o README).
-    // Vazios, o painel fica fechado para todo mundo.
-    "ACCESS_TEAM_DOMAIN": "",
-    "ACCESS_AUD": ""
-  }
+  ]
+  // PLANILHA_URL e PLANILHA_TOKEN são secrets: configure no painel do Cloudflare (veja o README).
 }
