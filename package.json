@@ -11,7 +11,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "icons": "node scripts/gerar-icones.mjs"
+    "icons": "node scripts/gerar-icones.mjs",
+    "worker:tipos": "wrangler types worker/worker-configuration.d.ts --strict-vars=false",
+    "worker:check": "tsc -p worker"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

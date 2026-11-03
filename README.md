@@ -67,3 +67,52 @@ Preencha `GOOGLE_ADS_ID`, `GOOGLE_ADS_CONVERSION_LABEL` e `GA4_ID` em `src/confi
 - Todo clique em link do WhatsApp dispara a conversão do Google Ads e o evento GA4 `whatsapp_click`, com os parâmetros `cta` e `local`.
 - O envio do formulário de eventos dispara também `generate_lead`.
 - O consentimento começa negado (Consent Mode v2) e muda para concedido quando a pessoa clica em "Aceitar".
+
+## Leads de eventos (mini CRM)
+
+Cada envio do formulário de eventos é gravado num banco D1 do Cloudflare antes de abrir o WhatsApp. Se a gravação falhar, o WhatsApp abre do mesmo jeito. A equipe acompanha os pedidos em `/painel`, que fica protegido pelo Cloudflare Access.
+
+- **`worker/`:** o Worker que atende `/api/leads` (recebe o formulário) e `/painel` (lista, status, anotações, exclusão e CSV). O resto do site continua estático.
+- **`migrations/`:** estrutura da tabela `leads`.
+- **Proteção contra spam:** campo escondido no formulário e no máximo 5 pedidos por IP a cada hora.
+- **Status:** Novo → Orçado → Fechado ou Perdido. Ao marcar "Fechado", informe o valor: ele vai para o CSV de conversões do Google Ads.
+
+### Configuração (uma vez só)
+
+Enquanto o `database_id` do `wrangler.jsonc` estiver zerado, o deploy falha. Faça os passos 1 e 2 antes do próximo `git push`.
+
+1. Crie o banco e a tabela:
+   ```bash
+   npx wrangler login
+   npx wrangler d1 create kangaca-leads
+   ```
+   Copie o `database_id` que aparecer para o `wrangler.jsonc` e rode:
+   ```bash
+   npx wrangler d1 migrations apply kangaca-leads --remote
+   ```
+2. Faça o deploy (`git push` ou `npx wrangler deploy`). O domínio `kangaca.com.br` precisa estar ligado ao Worker em Settings > Domains & Routes.
+3. Proteja o painel no Cloudflare Zero Trust (plano Free):
+   - Em **Settings > Authentication > Login methods**, deixe ativo o **One-time PIN**, que manda um código por e-mail (ou adicione o login com Google).
+   - Em **Access > Applications > Add an application > Self-hosted**, use o nome `Painel Kangaça`, o domínio `kangaca.com.br` e o caminho `painel`.
+   - Crie a política **Allow** com **Include > Emails** e os e-mails da equipe com acesso ao painel.
+   - Na aplicação criada, copie o **Application Audience (AUD) Tag**. Em **Settings > Custom Pages**, veja o seu **team domain** (`algo.cloudflareaccess.com`).
+4. Cole os dois valores em `ACCESS_TEAM_DOMAIN` e `ACCESS_AUD` no `wrangler.jsonc` e publique de novo. Com eles vazios, o painel responde "Acesso restrito" para todo mundo.
+
+Para dar ou tirar acesso depois, edite só a política do Access. O Worker confere o token do Access em todo pedido ao painel, então o endereço `*.workers.dev`, que fica fora do Access, não abre o painel.
+
+### Conversões off-line no Google Ads
+
+O botão "Conversões para o Google Ads (CSV)" do painel gera o arquivo no formato de importação do Google Ads, só com os leads **fechados** que vieram de anúncio (com `gclid`).
+
+1. No Google Ads, vá em **Metas > Conversões > Nova ação de conversão > Importar > Cliques de CRMs, arquivos ou outras fontes**. Escolha a categoria **Lead convertido** e use o nome **`Evento fechado`**, exatamente assim.
+2. Uma vez por semana, baixe o CSV no painel e envie em **Metas > Conversões > Uploads**. O Google ignora cliques repetidos e cliques com mais de 90 dias.
+
+### Desenvolvimento
+
+```bash
+npm run build
+npx wrangler d1 migrations apply kangaca-leads --local
+npx wrangler dev
+```
+
+Depois de mudar o `wrangler.jsonc`, rode `npm run worker:tipos` e `npm run worker:check`.

@@ -1,5 +1,6 @@
 import { mensagemEvento, whatsappLink } from '../lib/whatsapp';
 import { rastrearLead, rastrearWhatsapp } from './rastreamento';
+import { parametros } from './parametros';
 
 const form = document.querySelector<HTMLFormElement>('[data-orcamento]');
 
@@ -19,6 +20,10 @@ if (form) {
 
   const regras: Record<string, () => string> = {
     nome: () => (texto('nome').length >= 2 ? '' : 'Conte pra gente o seu nome.'),
+    whatsapp: () => {
+      const digitos = texto('whatsapp').replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');
+      return /^\d{10,11}$/.test(digitos) ? '' : 'Informe o WhatsApp com DDD.';
+    },
     tipo: () => (texto('tipo') ? '' : 'Escolha o tipo de evento.'),
     data: () => {
       const data = texto('data');
@@ -43,6 +48,26 @@ if (form) {
     if (regras[nome]) validar(nome);
   });
 
+  /**
+   * Guarda o pedido no painel de leads. Não espera a resposta: o WhatsApp precisa abrir
+   * ainda dentro do clique (senão o navegador bloqueia) e abre mesmo se o envio falhar.
+   */
+  function salvarLead(pedido: Record<string, string>) {
+    const corpo = {
+      ...Object.fromEntries(parametros),
+      ...pedido,
+      whatsapp: texto('whatsapp'),
+      empresa: texto('empresa'),
+      pagina: location.pathname,
+    };
+    fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(corpo),
+      keepalive: true,
+    }).catch(() => {});
+  }
+
   form.addEventListener('submit', (evento) => {
     evento.preventDefault();
     const invalidos = Object.keys(regras).filter((nome) => !validar(nome));
@@ -53,14 +78,16 @@ if (form) {
       return;
     }
 
-    const mensagem = mensagemEvento({
+    const pedido = {
       nome: texto('nome'),
       tipo: texto('tipo'),
       data: texto('data'),
       convidados: texto('convidados'),
       local: texto('local'),
       observacoes: texto('observacoes'),
-    });
+    };
+    salvarLead(pedido);
+    const mensagem = mensagemEvento(pedido);
 
     rastrearWhatsapp('evento', 'formulario');
     rastrearLead();

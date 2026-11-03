@@ -2,9 +2,26 @@
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
   "name": "kangaca",
   "compatibility_date": "2026-10-30",
-  // Site 100% estático: o Worker só serve os arquivos gerados pelo Astro.
+  // O Worker só atende /api/* e /painel*. Todo o resto são os arquivos estáticos do Astro.
+  "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*", "/painel", "/painel/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kangaca-leads",
+      "database_id": "4fb4b7b0-fb57-45c5-8caa-7e50f9a7aae3",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // TODO: preencher depois de criar a aplicação no Cloudflare Access (veja o README).
+    // Vazios, o painel fica fechado para todo mundo.
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
   }
 }

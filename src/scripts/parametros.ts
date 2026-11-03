@@ -1,5 +1,3 @@
-export {};
-
 // Mantém gclid, gbraid, wbraid e utm_* ao navegar entre as páginas do site.
 const CHAVE = 'kg-parametros';
 const rastreavel = (nome: string) => /^(gclid|gbraid|wbraid|utm_.+)$/.test(nome);
@@ -14,7 +12,8 @@ function carregar() {
   }
 }
 
-const parametros = carregar();
+/** Parâmetros de anúncio da visita, também enviados com o pedido de orçamento. */
+export const parametros = carregar();
 
 if (parametros.length) {
   document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {

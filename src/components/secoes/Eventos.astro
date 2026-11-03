@@ -41,12 +41,24 @@ const tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'];
 
   <form class="orcamento" id="orcamento" data-orcamento novalidate>
     <h3>Peça seu orçamento</h3>
-    <p class="orcamento__intro">Preencha e sua mensagem chega pronta no WhatsApp.</p>
+    <p class="orcamento__intro">Preencha e sua mensagem chega pronta no WhatsApp. Guardamos o pedido para preparar o orçamento (<a href="/politica-de-privacidade/">privacidade</a>).</p>
 
     <div class="campo">
       <label for="ev-nome">Nome</label>
       <input id="ev-nome" name="nome" type="text" autocomplete="name" required aria-describedby="ev-nome-erro" />
       <p class="campo__erro" id="ev-nome-erro"></p>
+    </div>
+
+    <div class="campo">
+      <label for="ev-whatsapp">WhatsApp com DDD</label>
+      <input id="ev-whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="(11) 90000-0000" required aria-describedby="ev-whatsapp-erro" />
+      <p class="campo__erro" id="ev-whatsapp-erro"></p>
+    </div>
+
+    <!-- Armadilha para robôs: pessoas não veem nem alcançam este campo. -->
+    <div class="visualmente-oculto" aria-hidden="true">
+      <label for="ev-empresa">Empresa</label>
+      <input id="ev-empresa" name="empresa" type="text" tabindex="-1" autocomplete="off" />
     </div>
 
     <div class="campo">
