@@ -15,7 +15,7 @@ export const SITE = {
   chef: 'Beatriz Souza',
   // Ouvido por leitores de tela e leitura em voz alta logo depois do título da home.
   resumo:
-    'O Kangaça é um restaurante autoral na Vila Mariana, em São Paulo: uma cozinha de fusão Brasil, África e Ásia. Nasce da curiosidade e da pesquisa da chef Bia Souza sobre o que essas culturas têm em comum, como a comunhão ao redor da mesa, as técnicas tradicionais e a comida de sustância. A casa serve almoço executivo de terça a sexta, faz jantares especiais sob reserva e cuida de eventos e buffet.',
+    'O Kangaça é um restaurante autoral na Vila Mariana, em São Paulo: uma cozinha de fusão Brasil, África e Ásia. Nasce da curiosidade e da pesquisa da chef Bia Souza sobre o que essas culturas têm em comum, como a comunhão ao redor da mesa, as técnicas tradicionais e a comida de sustância. A casa serve almoço executivo de terça a sexta e happy hour de sexta a domingo, faz jantares especiais sob reserva e cuida de eventos e buffet.',
 } as const;
 
 export const SEO = {
@@ -87,8 +87,13 @@ export const HORARIOS = {
       fecha: '15:00',
     },
   },
+  // TODO: confirmar o horário do happy hour (e então incluir no JSON-LD, como o almoço).
+  happyHour: {
+    dias: 'Sexta a domingo',
+    diasCurto: 'sex–dom',
+  },
   jantares: 'Jantares e eventos sob reserva',
-  // TODO: confirmar horários de jantar e o funcionamento de sábado, domingo e segunda.
+  // TODO: confirmar horários de jantar e o funcionamento de segunda.
   demaisDias: 'Consulte pelo WhatsApp',
 } as const;
 
