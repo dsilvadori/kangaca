@@ -1,6 +1,6 @@
 ---
 /*
- * Vitrine da cozinha para as páginas de evento: dois vídeos curtos e uma foto.
+ * Vitrine da cozinha para as páginas de evento: vídeos curtos e fotos (3 colunas no computador, carrossel no celular).
  * Os vídeos ficam em public/videos (sem som, 432×768) e só baixam quando chegam perto da tela.
  * Os pôsteres em src/assets/videos são o quadro mostrado antes de o vídeo tocar.
  */
@@ -8,7 +8,10 @@ import { getImage } from 'astro:assets';
 import Img from '../Img.astro';
 import posterGravlax from '../../assets/videos/gravlax-preparo.jpg';
 import posterPrato from '../../assets/videos/prato-close.jpg';
+import posterFingerFood from '../../assets/videos/finger-food.jpg';
+import posterFocaccia from '../../assets/videos/focaccia.jpg';
 import goxinha from '../../assets/pratos/goxinha-close.jpg';
+import acaraje from '../../assets/fotos/evento-acaraje.jpg';
 
 interface Props {
   sobretitulo?: string;
@@ -29,6 +32,12 @@ const poster = async (src: ImageMetadata) => (await getImage({ src, width: 432, 
 
 const itens = [
   {
+    tipo: 'foto' as const,
+    src: acaraje,
+    legenda: 'Acarajé, vatapá e camarão num evento ao ar livre',
+    descricao: 'Mesa de evento no jardim com cesto de acarajés, réchauds de vatapá e camarão, vinagrete e fitinhas coloridas',
+  },
+  {
     tipo: 'video' as const,
     src: '/videos/gravlax-preparo.mp4',
     poster: await poster(posterGravlax),
@@ -36,10 +45,24 @@ const itens = [
     descricao: 'Vídeo: o salmão coberto de ervas é lavado e fatiado na cozinha do Kangaça.',
   },
   {
+    tipo: 'video' as const,
+    src: '/videos/finger-food.mp4',
+    poster: await poster(posterFingerFood),
+    legenda: 'Finger foods para comer com a mão',
+    descricao: 'Vídeo: mão segurando um petisco sobre pão folha, com cogumelos, repolho roxo, disco dourado e geleia de pimenta.',
+  },
+  {
     tipo: 'foto' as const,
     src: goxinha,
     legenda: 'Goxinha com nori e catchup de missô',
     descricao: 'Close de duas goxinhas douradas com catchup de missô sobre folha de nori',
+  },
+  {
+    tipo: 'video' as const,
+    src: '/videos/focaccia.mp4',
+    poster: await poster(posterFocaccia),
+    legenda: 'Focaccia feita na casa',
+    descricao: 'Vídeo: a massa da focaccia é misturada, regada com azeite, assada e cortada na cozinha do Kangaça.',
   },
   {
     tipo: 'video' as const,
