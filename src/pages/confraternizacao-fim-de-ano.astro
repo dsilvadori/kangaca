@@ -1,0 +1,38 @@
+---
+import Campanha from '../layouts/Campanha.astro';
+import HeroCampanha from '../components/secoes/HeroCampanha.astro';
+import Eventos from '../components/secoes/Eventos.astro';
+import NaMesa from '../components/secoes/NaMesa.astro';
+import Conceito from '../components/secoes/Conceito.astro';
+import Cta from '../components/Cta.astro';
+import cortinas from '../assets/fotos/jardim-cortinas.jpg';
+---
+
+<Campanha
+  titulo="Confraternização de fim de ano em São Paulo | Kangaça"
+  descricao="Confraternização de fim de ano com buffet, finger foods, drinks e doces, no seu espaço ou no nosso quintal na Vila Mariana. Peça seu orçamento pelo WhatsApp."
+  caminho="/confraternizacao-fim-de-ano/"
+  nome="Confraternização de fim de ano"
+>
+  <HeroCampanha
+    slot="hero"
+    sobretitulo="Fim de ano no Kangaça"
+    linhas={['Confraternização', 'de fim de ano']}
+    texto="Feche o ano com comida de sustância. Buffet, finger foods, drinks e doces da chef Bia Souza, no seu espaço ou no nosso quintal, na Vila Mariana."
+    imagem={cortinas}
+    alt="Quintal do Kangaça com cortinas claras, samambaias e luz dourada de fim de tarde"
+  >
+    <a class="btn btn--primario" href="#orcamento" data-cta="confra" data-local="hero-confra" data-magnetic>Pedir orçamento</a>
+    <Cta motivo="confra" local="hero-confra" variante="contorno">Falar no WhatsApp</Cta>
+  </HeroCampanha>
+  <Conceito resumo />
+  <NaMesa titulo="Um gostinho do que pode ir à sua confra" cta="confra" />
+  <Eventos
+    sobretitulo="Confraternizações em São Paulo"
+    titulo="A confra da sua equipe, do cardápio ao serviço"
+    lead="Uma cozinha que mistura Brasil, África e Ásia para fechar o ano com quem importa. A gente monta o cardápio com você, cuida da mesa e serve."
+    tipos={['Confraternização da empresa', 'Confraternização de amigos ou família', 'Outro']}
+    campanha="confra-2026"
+    motivo="confra"
+  />
+</Campanha>

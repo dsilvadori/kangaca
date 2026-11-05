@@ -124,10 +124,13 @@ function telefone(digitos) {
   return String(digitos).replace(/^55(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
 }
 
+/** De onde veio o pedido. Páginas de campanha (ex.: confra-2026) aparecem na frente: "confra-2026 · Google Ads". */
 function origem(lead) {
-  if (lead.gclid || lead.gbraid || lead.wbraid) return 'Google Ads';
-  if (lead.utm_source) return [lead.utm_source, lead.utm_campaign].filter(Boolean).join(' · ');
-  return 'Direto / orgânico';
+  let fonte = 'Direto / orgânico';
+  if (lead.gclid || lead.gbraid || lead.wbraid) fonte = 'Google Ads';
+  else if (lead.utm_source) fonte = [lead.utm_source, lead.utm_campaign].filter(Boolean).join(' · ');
+  const partes = [lead.campanha, ...fonte.split(' · ')].filter(Boolean);
+  return seguro([...new Set(partes)].join(' · '));
 }
 
 /** Texto digitado pelo visitante nunca vira fórmula na planilha. */

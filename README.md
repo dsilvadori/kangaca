@@ -47,6 +47,7 @@ Depois, adicione o domínio em Settings > Domains & Routes.
 
 - `/`: página principal.
 - `/almoco-executivo-vila-mariana/`, `/buffet-e-eventos/` e `/jantares-especiais/`: páginas de destino dos grupos de anúncios. Reaproveitam as seções da home.
+- `/confraternizacao-fim-de-ano/`: página da campanha de fim de ano. O formulário grava `confra-2026` no começo da coluna **Origem** da planilha (ex.: `confra-2026 · Google Ads`) e a mensagem do WhatsApp já diz que é confraternização.
 - `/politica-de-privacidade/` e a 404: `noindex` e fora do sitemap.
 
 Parâmetros de anúncio (`gclid`, `gbraid`, `wbraid`, `utm_*`) são mantidos na navegação entre páginas por `src/scripts/parametros.ts`.

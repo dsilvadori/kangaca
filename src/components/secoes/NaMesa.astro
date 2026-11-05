@@ -1,0 +1,205 @@
+---
+/*
+ * Vitrine da cozinha para as páginas de evento: dois vídeos curtos e uma foto.
+ * Os vídeos ficam em public/videos (sem som, 432×768) e só baixam quando chegam perto da tela.
+ * Os pôsteres em src/assets/videos são o quadro mostrado antes de o vídeo tocar.
+ */
+import { getImage } from 'astro:assets';
+import Img from '../Img.astro';
+import posterGravlax from '../../assets/videos/gravlax-preparo.jpg';
+import posterPrato from '../../assets/videos/prato-close.jpg';
+import goxinha from '../../assets/pratos/goxinha-close.jpg';
+
+interface Props {
+  sobretitulo?: string;
+  titulo?: string;
+  texto?: string;
+  /** Marca do clique no GA4 (data-cta). */
+  cta?: string;
+}
+
+const {
+  sobretitulo = 'Da nossa cozinha',
+  titulo = 'Um gostinho da nossa cozinha',
+  texto = 'Alguns pratos que já saíram daqui, todos feitos do zero, com técnica e pesquisa. É só uma amostra: o cardápio do seu evento é montado com você.',
+  cta = 'evento',
+} = Astro.props;
+
+const poster = async (src: ImageMetadata) => (await getImage({ src, width: 432, format: 'webp', quality: 62 })).src;
+
+const itens = [
+  {
+    tipo: 'video' as const,
+    src: '/videos/gravlax-preparo.mp4',
+    poster: await poster(posterGravlax),
+    legenda: 'Gravlax: salmão curado na casa',
+    descricao: 'Vídeo: o salmão coberto de ervas é lavado e fatiado na cozinha do Kangaça.',
+  },
+  {
+    tipo: 'foto' as const,
+    src: goxinha,
+    legenda: 'Goxinha com nori e catchup de missô',
+    descricao: 'Close de duas goxinhas douradas com catchup de missô sobre folha de nori',
+  },
+  {
+    tipo: 'video' as const,
+    src: '/videos/prato-close.mp4',
+    poster: await poster(posterPrato),
+    legenda: 'Pratos de sustância, montados na hora',
+    descricao: 'Vídeo: prato dourado sendo montado com arroz, homus rosado e carne ao molho.',
+  },
+];
+---
+
+<section class="secao secao--clara na-mesa" aria-labelledby="na-mesa-titulo">
+  <div class="na-mesa__texto">
+    <p class="sobretitulo">{sobretitulo}</p>
+    <h2 id="na-mesa-titulo" data-split>{titulo}</h2>
+    <p class="lead" data-reveal>{texto}</p>
+  </div>
+  <ul class="na-mesa__lista">
+    {
+      itens.map((item) => (
+        <li data-reveal>
+          <figure>
+            <div class="na-mesa__midia">
+              {item.tipo === 'video' ? (
+                <video
+                  src={item.src}
+                  poster={item.poster}
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-label={item.descricao}
+                  data-video-vitrine
+                />
+              ) : (
+                <Img src={item.src} alt={item.descricao} sizes="(min-width: 768px) 300px, 70vw" />
+              )}
+            </div>
+            <figcaption>{item.legenda}</figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="na-mesa__nota" data-reveal>
+    Esses são só alguns exemplos. Tem muito mais no nosso cardápio de eventos: buffet, finger foods, drinks e doces. A gente monta a proposta de acordo com o seu grupo e o seu orçamento.
+  </p>
+  <a class="btn btn--primario" href="#orcamento" data-cta={cta} data-local="na-mesa" data-magnetic>Montar o cardápio do meu evento</a>
+</section>
+
+<script>
+  // Toca só o que está na tela; quem prefere menos movimento recebe os controles e decide.
+  const videos = document.querySelectorAll<HTMLVideoElement>('[data-video-vitrine]');
+  const menosMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (menosMovimento || !('IntersectionObserver' in window)) {
+    videos.forEach((video) => {
+      video.controls = true;
+      video.loop = false;
+    });
+  } else {
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const { target, isIntersecting } of entradas) {
+          const video = target as HTMLVideoElement;
+          if (isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    videos.forEach((video) => observador.observe(video));
+  }
+</script>
+
+<style>
+  .na-mesa {
+    display: grid;
+    justify-items: center;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .na-mesa__texto {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 44rem;
+  }
+
+  .na-mesa__texto h2 {
+    margin-top: -1.1rem;
+    font-size: clamp(1.9rem, 4vw, 3.1rem);
+  }
+
+  /* Celular: carrossel com encaixe; o próximo item aparece pela metade para convidar a arrastar. */
+  .na-mesa__lista {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(70vw, 300px);
+    gap: 1rem;
+    width: calc(100% + 2 * var(--margem));
+    margin-inline: calc(-1 * var(--margem));
+    padding-inline: var(--margem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--margem);
+    scrollbar-width: none;
+  }
+
+  .na-mesa__lista::-webkit-scrollbar {
+    display: none;
+  }
+
+  .na-mesa__lista li {
+    scroll-snap-align: start;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .na-mesa__nota {
+    max-width: 40rem;
+    margin-top: -0.5rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .na-mesa__midia {
+    overflow: hidden;
+    aspect-ratio: 9 / 16;
+    border-radius: 6px;
+    background: var(--turquesa-profundo);
+  }
+
+  .na-mesa__midia video,
+  .na-mesa__midia :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  figcaption {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 768px) {
+    .na-mesa__lista {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-columns: auto;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 960px;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+  }
+</style>

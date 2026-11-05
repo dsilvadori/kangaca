@@ -18,10 +18,10 @@ export interface PedidoEvento {
 }
 
 /** Monta o texto do orçamento enviado pelo formulário de eventos. */
-export function mensagemEvento(pedido: PedidoEvento): string {
+export function mensagemEvento(pedido: PedidoEvento, motivo: Motivo = 'evento'): string {
   const [ano, mes, dia] = pedido.data.split('-');
   const linhas = [
-    WHATSAPP.mensagens.evento,
+    WHATSAPP.mensagens[motivo],
     '',
     `Nome: ${pedido.nome}`,
     `Tipo de evento: ${pedido.tipo}`,

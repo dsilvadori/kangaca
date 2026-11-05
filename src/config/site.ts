@@ -51,6 +51,7 @@ export const WHATSAPP = {
     almoco: 'Olá, Kangaça! Vim pelo site e queria saber o cardápio do almoço de hoje.',
     jantar: 'Olá, Kangaça! Vim pelo site e quero saber dos próximos jantares especiais.',
     evento: 'Olá, Kangaça! Vim pelo site e quero um orçamento de evento:',
+    confra: 'Olá, Kangaça! Vim pelo site e quero um orçamento de confraternização de fim de ano:',
     geral: 'Olá, Kangaça! Vim pelo site.',
   },
 } as const;

@@ -1204,6 +1204,49 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
   color: var(--terracota);
 }
 
+.eventos__destaque {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.3rem 1rem;
+  margin-top: 0.4rem;
+  padding: 1rem 1.2rem;
+  border: 1.5px solid var(--terracota);
+  border-radius: 6px;
+  color: var(--tinta);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.eventos__destaque:hover,
+.eventos__destaque:focus-visible {
+  background: #fbe9dc;
+}
+
+.eventos__destaque-rotulo {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--terracota);
+}
+
+.eventos__destaque-texto {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.eventos__destaque-seta {
+  font-size: 1.5rem;
+  color: var(--terracota);
+  transition: transform 0.2s ease;
+}
+
+.eventos__destaque:hover .eventos__destaque-seta {
+  transform: translateX(4px);
+}
+
 .eventos__foto {
   width: 100%;
   max-width: 336px;

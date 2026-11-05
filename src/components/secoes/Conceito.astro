@@ -1,4 +1,11 @@
 ---
+interface Props {
+  /** Só os círculos e o primeiro parágrafo, para as páginas de campanha. */
+  resumo?: boolean;
+}
+
+const { resumo = false } = Astro.props;
+
 const orbes = [
   { nome: 'Brasil', frase: 'A comida popular, a rua e o quintal.', cor: 'profundo' },
   { nome: 'África', frase: 'A ancestralidade, o fogo e os saberes de herança.', cor: 'terracota' },
@@ -41,15 +48,20 @@ const cores = [
     <p class="lead" data-reveal>
       O Kangaça é um projeto gastronômico autoral, uma cozinha de fusão Brasil, África e Ásia. Nasce da curiosidade de pesquisar o que essas culturas têm em comum, valorizando a ancestralidade, a comida popular e as trocas culturais que transformaram a maneira como o mundo se alimenta.
     </p>
+    {!resumo && (<>
     <p data-reveal>
       Nas três, a comida é quase religiosa: é comunhão, é sentar à mesa com quem se ama. São comidas de sustância, feitas para sustentar quem trabalha, como a dos cangaceiros, a dos mineiros e o prato único da Paulistânia, levado para o campo e feito para durar o dia. As técnicas conversam, do corte dos legumes ao pilão, porque a preocupação não é só alimentar: é nutrir o corpo, a consciência e o coração.
     </p>
     <p data-reveal>
       Por isso é uma cozinha de encontros e travessias: resgata técnicas, ingredientes e saberes tradicionais para criar uma gastronomia contemporânea, acessível, criativa e cheia de identidade. Arrozes, vegetais, proteínas, angus, pastas de temperos, molhos encorpados, pestos, azeites artesanais e conservas são os protagonistas, com inspiração nas cozinhas de rua e nas tradições africanas, brasileiras e asiáticas.
     </p>
+    </>)}
+    {resumo && (<p data-reveal>
+      Nas três, a comida é comunhão: sentar à mesa com quem se ama. É esse espírito que a chef Bia Souza leva para cada evento, com comida de sustância, técnica e identidade.
+    </p>)}
   </div>
 
-  <ul class="cores">
+  {!resumo && (<ul class="cores">
     {
       cores.map((c) => (
         <li data-reveal>
@@ -61,5 +73,5 @@ const cores = [
         </li>
       ))
     }
-  </ul>
+  </ul>)}
 </section>

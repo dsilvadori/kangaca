@@ -1,4 +1,4 @@
-import { mensagemEvento, whatsappLink } from '../lib/whatsapp';
+import { mensagemEvento, whatsappLink, type Motivo } from '../lib/whatsapp';
 import { rastrearLead, rastrearWhatsapp } from './rastreamento';
 import { parametros } from './parametros';
 
@@ -58,6 +58,7 @@ if (form) {
       ...pedido,
       whatsapp: texto('whatsapp'),
       empresa: texto('empresa'),
+      campanha: texto('campanha'),
       pagina: location.pathname,
     };
     fetch('/api/leads', {
@@ -87,11 +88,12 @@ if (form) {
       observacoes: texto('observacoes'),
     };
     salvarLead(pedido);
-    const mensagem = mensagemEvento(pedido);
+    const motivo = (form.dataset.motivo ?? 'evento') as Motivo;
+    const mensagem = mensagemEvento(pedido, motivo);
 
-    rastrearWhatsapp('evento', 'formulario');
+    rastrearWhatsapp(motivo, 'formulario');
     rastrearLead();
-    window.open(whatsappLink('evento', mensagem), '_blank', 'noopener');
+    window.open(whatsappLink(motivo, mensagem), '_blank', 'noopener');
     status.textContent = 'Sua mensagem foi aberta no WhatsApp. É só enviar!';
   });
 }

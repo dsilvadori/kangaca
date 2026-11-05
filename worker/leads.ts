@@ -48,6 +48,7 @@ export async function receberLead(request: Request, env: Env): Promise<Response>
     local: texto(dados.local, 50),
     observacoes: texto(dados.observacoes, 2000),
     pagina: texto(dados.pagina, 200),
+    campanha: texto(dados.campanha, 50),
     ...Object.fromEntries(RASTREIO.map((chave) => [chave, texto(dados[chave], 200)])),
   };
 

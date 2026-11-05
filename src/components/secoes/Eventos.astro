@@ -2,8 +2,30 @@
 import Img from '../Img.astro';
 import Cta from '../Cta.astro';
 import foto from '../../assets/pratos/evento-buffet-finger-food.jpg';
+import type { Motivo } from '../../lib/whatsapp';
 
-const { titulo = 'O Kangaça cozinha no seu evento, ou seu evento acontece aqui em casa.' } = Astro.props;
+interface Props {
+  titulo?: string;
+  sobretitulo?: string;
+  lead?: string;
+  tipos?: string[];
+  /** Marca gravada na planilha de leads para separar os pedidos de uma página de campanha. */
+  campanha?: string;
+  /** Mensagem do WhatsApp usada pelo formulário e pelo botão "Prefiro conversar direto". */
+  motivo?: Motivo;
+  /** Mostra o atalho para a página de confraternização de fim de ano. */
+  linkConfra?: boolean;
+}
+
+const {
+  titulo = 'O Kangaça cozinha no seu evento, ou seu evento acontece aqui em casa.',
+  sobretitulo = 'Buffet para eventos em São Paulo',
+  lead = 'Comida para reunir quem você ama: buffet, finger foods, drinks e doces, do jeito do seu encontro.',
+  tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'],
+  campanha = '',
+  motivo = 'evento',
+  linkConfra = false,
+} = Astro.props;
 
 const incluso = [
   { texto: 'Cardápio personalizado', icone: 'M5 3h14v18H5zM9 8h6M9 12h6M9 16h4' },
@@ -12,15 +34,14 @@ const incluso = [
   { texto: 'Produção e serviço', icone: 'M4 14a8 8 0 0 1 16 0zM2 18h20M12 6V4' },
 ];
 
-const tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'];
 ---
 
 <section class="secao secao--clara eventos" id="eventos" aria-labelledby="eventos-titulo">
   <div class="eventos__intro">
     <div class="eventos__texto">
-      <p class="sobretitulo">Buffet para eventos em São Paulo</p>
+      <p class="sobretitulo">{sobretitulo}</p>
       <h2 id="eventos-titulo" data-split>{titulo}</h2>
-      <p class="lead" data-reveal>Comida para reunir quem você ama: buffet, finger foods, drinks e doces, do jeito do seu encontro.</p>
+      <p class="lead" data-reveal>{lead}</p>
       <ul class="eventos__lista">
         {
           incluso.map((item) => (
@@ -33,13 +54,23 @@ const tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'];
           ))
         }
       </ul>
+      {
+        linkConfra && (
+          <a class="eventos__destaque" href="/confraternizacao-fim-de-ano/" data-reveal>
+            <span class="eventos__destaque-rotulo">Fim de ano</span>
+            <span class="eventos__destaque-texto">Vai fazer a confraternização da empresa ou da turma? Veja nosso especial de fim de ano</span>
+            <span class="eventos__destaque-seta" aria-hidden="true">→</span>
+          </a>
+        )
+      }
     </div>
     <div class="eventos__foto" data-curtain>
       <Img src={foto} alt="Equipe do Kangaça montando uma mesa de finger foods em um evento" sizes="(min-width: 480px) 336px, 100vw" />
     </div>
   </div>
 
-  <form class="orcamento" id="orcamento" data-orcamento novalidate>
+  <form class="orcamento" id="orcamento" data-orcamento data-motivo={motivo} novalidate>
+    <input type="hidden" name="campanha" value={campanha} />
     <h3>Peça seu orçamento</h3>
     <p class="orcamento__intro">Preencha e sua mensagem chega pronta no WhatsApp. Guardamos o pedido para preparar o orçamento (<a href="/politica-de-privacidade/">privacidade</a>).</p>
 
@@ -98,7 +129,7 @@ const tipos = ['Aniversário', 'Corporativo', 'Casamento', 'Outro'];
 
     <div class="orcamento__acoes">
       <button class="btn btn--primario" type="submit" data-magnetic>Enviar pelo WhatsApp</button>
-      <Cta motivo="evento" local="formulario" variante="contorno" class="btn--escuro">Prefiro conversar direto</Cta>
+      <Cta motivo={motivo} local="formulario" variante="contorno" class="btn--escuro">Prefiro conversar direto</Cta>
     </div>
     <p class="orcamento__status" role="status" data-orcamento-status></p>
   </form>
