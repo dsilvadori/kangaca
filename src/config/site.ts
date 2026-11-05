@@ -110,7 +110,7 @@ export const TRACKING = {
   // TODO: preencher com os IDs reais. Enquanto tiverem X, nenhum script do Google é carregado.
   GOOGLE_ADS_ID: 'AW-XXXXXXXXXX',
   GOOGLE_ADS_CONVERSION_LABEL: 'XXXXXXXXXXX',
-  GA4_ID: 'G-XXXXXXXXXX',
+  GA4_ID: 'G-40WDYVLKNE',
 } as const;
 
 const idReal = (id: string) => id !== '' && !id.includes('XXX');
