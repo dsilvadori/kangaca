@@ -107,16 +107,18 @@ export const A_CONFIRMAR = {
 } as const;
 
 export const TRACKING = {
-  // TODO: preencher com os IDs reais. Enquanto tiverem X, nenhum script do Google é carregado.
-  GOOGLE_ADS_ID: 'AW-XXXXXXXXXX',
+  // IDs com X não carregam nada. TODO: colar o rótulo da conversão "Lead – WhatsApp" (Metas > Conversões).
+  GOOGLE_ADS_ID: 'AW-18560090753',
   GOOGLE_ADS_CONVERSION_LABEL: 'XXXXXXXXXXX',
   GA4_ID: 'G-40WDYVLKNE',
+  // Tag do Google criada pela conta do Google Ads (contato.kangaca@gmail.com).
+  GTM_ID: 'GTM-M64DNH9N',
 } as const;
 
 const idReal = (id: string) => id !== '' && !id.includes('XXX');
 
 export const trackingAtivo = () =>
-  idReal(TRACKING.GOOGLE_ADS_ID) || idReal(TRACKING.GA4_ID);
+  idReal(TRACKING.GOOGLE_ADS_ID) || idReal(TRACKING.GA4_ID) || idReal(TRACKING.GTM_ID);
 
 /** `send_to` da conversão do Google Ads, ou null se os IDs ainda não forem reais. */
 export const conversaoSendTo = () =>
@@ -126,3 +128,4 @@ export const conversaoSendTo = () =>
 
 export const ga4Ativo = () => idReal(TRACKING.GA4_ID);
 export const adsAtivo = () => idReal(TRACKING.GOOGLE_ADS_ID);
+export const gtmAtivo = () => idReal(TRACKING.GTM_ID);

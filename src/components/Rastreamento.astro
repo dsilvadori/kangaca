@@ -1,10 +1,12 @@
 ---
-// gtag.js com Consent Mode v2. Só entra na página quando há IDs reais em src/config/site.ts.
-import { TRACKING, trackingAtivo, ga4Ativo, adsAtivo } from '../config/site';
+// Tags do Google com Consent Mode v2. Só entram na página quando há IDs reais em src/config/site.ts.
+// O consentimento padrão (negado) é definido antes de qualquer script do Google carregar.
+import { TRACKING, trackingAtivo, ga4Ativo, adsAtivo, gtmAtivo } from '../config/site';
 
 const ids = [
   ...(ga4Ativo() ? [TRACKING.GA4_ID] : []),
-  ...(adsAtivo() ? [TRACKING.GOOGLE_ADS_ID] : []),
+  // Com o GTM ativo, a tag do Google Ads já vem pelo contêiner: não configurar de novo.
+  ...(adsAtivo() && !gtmAtivo() ? [TRACKING.GOOGLE_ADS_ID] : []),
 ];
 ---
 
@@ -34,7 +36,12 @@ const ids = [
         gtag('js', new Date());
         ids.forEach(function (id) { gtag('config', id); });
       </script>
-      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ids[0]}`} />
+      {ids.length > 0 && (
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ids[0]}`} />
+      )}
+      {gtmAtivo() && (
+        <script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${TRACKING.GTM_ID}`} />
+      )}
     </>
   )
 }
