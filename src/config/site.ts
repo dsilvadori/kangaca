@@ -107,9 +107,9 @@ export const A_CONFIRMAR = {
 } as const;
 
 export const TRACKING = {
-  // IDs com X não carregam nada. TODO: colar o rótulo da conversão "Lead – WhatsApp" (Metas > Conversões).
+  // IDs com X não carregam nada. Rótulo: conversão "Enviar formulário de lead (1)" (Metas > Conversões).
   GOOGLE_ADS_ID: 'AW-18560090753',
-  GOOGLE_ADS_CONVERSION_LABEL: 'XXXXXXXXXXX',
+  GOOGLE_ADS_CONVERSION_LABEL: '7x-7CMa0ubMdEIGFkpJF',
   GA4_ID: 'G-40WDYVLKNE',
   // Tag do Google criada pela conta do Google Ads (contato.kangaca@gmail.com).
   GTM_ID: 'GTM-M64DNH9N',
