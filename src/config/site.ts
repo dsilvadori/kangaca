@@ -35,9 +35,10 @@ export const SEO = {
 /** Perfil no Google. Atualize nota, total e referência de tempos em tempos. */
 export const GOOGLE = {
   perfil: 'Kangaça - Cozinha de Encontros',
-  nota: '5,0',
+  // Vazia de propósito: a casa preferiu não exibir a nota (estava 4,8 em nov/2026). Preencha para voltar a mostrar.
+  nota: '',
   avaliacoes: 31,
-  referencia: 'outubro de 2026',
+  referencia: 'novembro de 2026',
   url: 'https://maps.google.com/?cid=17650994143954835880',
 } as const;
 

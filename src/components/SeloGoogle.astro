@@ -5,10 +5,12 @@ interface Props {
   completo?: boolean;
 }
 const { completo = false } = Astro.props;
+// Sem nota em src/config/site.ts, o selo vira só um link para as avaliações, sem número.
+const nota: string = GOOGLE.nota;
 ---
 
 <a class:list={['selo-google', { 'selo-google--grande': completo }]} href={GOOGLE.url} target="_blank" rel="noopener">
-  <strong>{GOOGLE.nota}</strong>
+  {nota && <strong>{nota}</strong>}
   <span aria-hidden="true">★</span>
-  <span>no Google{completo && ` · ${GOOGLE.avaliacoes} avaliações`}</span>
+  <span>{nota ? `no Google${completo ? ` · ${GOOGLE.avaliacoes} avaliações` : ''}` : 'Avaliações no Google'}</span>
 </a>
