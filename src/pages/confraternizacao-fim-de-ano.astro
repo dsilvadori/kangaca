@@ -24,7 +24,7 @@ const nome = 'Confraternização de fim de ano';
 const beneficios = ['Cardápio montado com você', 'Mesa montada e servida pela nossa equipe', 'No seu espaço ou no nosso quintal'];
 
 const passos = [
-  { titulo: 'Conte sobre a confra', texto: 'Data, número de pessoas e onde vai ser. Leva 1 minuto pelo formulário.' },
+  { titulo: 'Conte sobre a confraternização', texto: 'Data, número de pessoas e onde vai ser. Leva 1 minuto pelo formulário.' },
   { titulo: 'Receba a proposta', texto: 'A gente monta o cardápio com você e manda o orçamento pelo WhatsApp.' },
   { titulo: 'Só aproveite', texto: 'No dia, cozinhamos, montamos a mesa e servimos. Sua equipe só chega e come.' },
 ];
@@ -56,7 +56,7 @@ const depoimentos = avaliacoes.filter((a) => a.destaque).slice(0, 3);
 const perguntas = [
   {
     p: 'Vocês atendem no escritório da empresa?',
-    r: 'Sim. Levamos a comida, montamos a mesa e servimos no seu espaço. Se preferir, a confra pode acontecer no nosso quintal, na Vila Mariana.',
+    r: 'Sim. Levamos a comida, montamos a mesa e servimos no seu espaço. Se preferir, a confraternização pode acontecer no nosso quintal, na Vila Mariana.',
   },
   {
     p: 'Quanto custa?',
@@ -92,7 +92,7 @@ const perguntas = [
     <div class="topo__grade">
       <div class="topo__texto">
         <p class="sobretitulo">Confraternização de fim de ano · São Paulo</p>
-        <h1 id="topo-titulo">Feche o ano com uma confra que vira assunto</h1>
+        <h1 id="topo-titulo">Feche o ano com uma confraternização que vira assunto</h1>
         <p class="topo__sub">
           Buffet, finger foods, drinks e doces de cozinha autoral, no seu escritório ou no nosso quintal na Vila Mariana.
         </p>
@@ -115,7 +115,7 @@ const perguntas = [
 
   <section class="secao secao--clara passos" aria-labelledby="passos-titulo">
     <p class="sobretitulo">Como funciona</p>
-    <h2 id="passos-titulo">Sua confra resolvida em 3 passos</h2>
+    <h2 id="passos-titulo">Sua confraternização resolvida em 3 passos</h2>
     <ol class="passos__lista">
       {
         passos.map((p, i) => (
@@ -131,7 +131,7 @@ const perguntas = [
 
   <NaMesa
     sobretitulo="O que vai na mesa"
-    titulo="O que pode ir na sua confra"
+    titulo="O que pode ir na sua confraternização"
     texto="Uma cozinha que mistura Brasil, África e Ásia, feita do zero. Alguns exemplos que já saíram daqui:"
     cta="confra"
   />
@@ -140,7 +140,7 @@ const perguntas = [
 
   <section class="secao secao--escura formatos" aria-labelledby="formatos-titulo">
     <p class="sobretitulo">Dois jeitos de fazer</p>
-    <h2 id="formatos-titulo">Onde vai ser a sua confra?</h2>
+    <h2 id="formatos-titulo">Onde vai ser a sua confraternização?</h2>
     <div class="formatos__lista">
       {
         formatos.map((f) => (
@@ -200,7 +200,7 @@ const perguntas = [
   <Onda de="claro" para="escuro" />
 
   <section class="secao secao--escura fechamento" aria-labelledby="fechamento-titulo">
-    <h2 id="fechamento-titulo">Dezembro chega rápido. Garanta a data da sua confra.</h2>
+    <h2 id="fechamento-titulo">Dezembro chega rápido. Garanta a data da sua confraternização.</h2>
     <p>Mande o pedido agora e receba a proposta pelo WhatsApp.</p>
     <div class="fechamento__acoes">
       <a class="btn btn--primario" href="#orcamento" data-cta="confra" data-local="fechamento">Pedir orçamento</a>
