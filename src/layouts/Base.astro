@@ -15,6 +15,7 @@ import Consentimento from '../components/Consentimento.astro';
 import Rastreamento from '../components/Rastreamento.astro';
 import Simbolo from '../components/Simbolo.astro';
 import SEO from '../components/SEO.astro';
+import type { Motivo } from '../lib/whatsapp';
 
 interface Props {
   titulo?: string;
@@ -24,9 +25,11 @@ interface Props {
   logoFixo?: boolean;
   noindex?: boolean;
   jsonLd?: object[];
+  /** Página de destino de anúncio: header enxuto e barra do celular levando ao formulário. */
+  landing?: { motivo: Motivo };
 }
 
-const { titulo, descricao, caminho, home = false, logoFixo = false, noindex = false, jsonLd } = Astro.props;
+const { titulo, descricao, caminho, home = false, logoFixo = false, noindex = false, jsonLd, landing } = Astro.props;
 ---
 
 <!doctype html>
@@ -77,12 +80,12 @@ const { titulo, descricao, caminho, home = false, logoFixo = false, noindex = fa
         </div>
       )
     }
-    <Header sobreHero={home || logoFixo} logoFixo={logoFixo} />
+    <Header sobreHero={home || logoFixo} logoFixo={logoFixo} landing={!!landing} />
     <main id="conteudo">
       <slot />
     </main>
     <Rodape />
-    <Flutuantes />
+    <Flutuantes motivo={landing?.motivo} />
     <Consentimento />
     <script>
       import '../scripts/main';

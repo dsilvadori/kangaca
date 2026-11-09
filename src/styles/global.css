@@ -625,6 +625,16 @@ html:not(.passou-hero):not(.menu-aberto) .header--sobre-hero:not(.header--logo-f
   font-size: 0.95rem;
 }
 
+/* Página de anúncio: volta para a home no lugar do menu */
+.header__home {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  margin-right: 0.5rem;
+  font-size: 0.95rem;
+  text-underline-offset: 0.25em;
+}
+
 .header__botao {
   position: relative;
   width: 3rem;

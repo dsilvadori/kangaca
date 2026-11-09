@@ -1,24 +1,42 @@
 ---
 import IconeWhatsapp from './IconeWhatsapp.astro';
-import { whatsappLink } from '../lib/whatsapp';
+import { whatsappLink, type Motivo } from '../lib/whatsapp';
+
+interface Props {
+  /** Em página de anúncio: a barra do celular vira "Pedir orçamento" + WhatsApp com a mensagem da campanha. */
+  motivo?: Motivo;
+}
+const { motivo } = Astro.props;
 ---
 
 <a
   class="flutuante"
-  href={whatsappLink('geral')}
+  href={whatsappLink(motivo ?? 'geral')}
   target="_blank"
   rel="noopener"
   aria-label="Conversar com o Kangaça pelo WhatsApp"
-  data-cta="geral"
+  data-cta={motivo ?? 'geral'}
   data-local="flutuante"
 >
   <IconeWhatsapp />
 </a>
 
-<div class="barra" data-barra>
-  <a class="btn btn--primario" href={whatsappLink('reserva')} target="_blank" rel="noopener" data-cta="reserva" data-local="barra">
-    <IconeWhatsapp />
-    <span>Reservar</span>
-  </a>
-  <a class="btn btn--contorno" href="/#orcamento" data-cta="evento" data-local="barra">Eventos</a>
-</div>
+{
+  motivo ? (
+    <div class="barra" data-barra>
+      <a class="btn btn--primario" href="#orcamento" data-cta={motivo} data-local="barra">Pedir orçamento</a>
+      <a class="btn btn--contorno" href={whatsappLink(motivo)} target="_blank" rel="noopener" data-cta={motivo} data-local="barra">
+        <IconeWhatsapp />
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  ) : (
+    <div class="barra" data-barra>
+      <a class="btn btn--primario" href={whatsappLink('reserva')} target="_blank" rel="noopener" data-cta="reserva" data-local="barra">
+        <IconeWhatsapp />
+        <span>Reservar</span>
+      </a>
+      <a class="btn btn--contorno" href="/#orcamento" data-cta="evento" data-local="barra">Eventos</a>
+    </div>
+  )
+}

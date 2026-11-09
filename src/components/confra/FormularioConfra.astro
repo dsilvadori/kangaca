@@ -1,0 +1,220 @@
+---
+/*
+ * Formulário de orçamento da página de confraternização.
+ * Usa os mesmos nomes e ids do formulário de eventos (src/scripts/orcamento.ts valida, grava o lead
+ * e abre o WhatsApp), mas começa pelas perguntas fáceis e troca selects por opções de toque.
+ * Os valores de `tipo` e `local` são os mesmos de antes, para a planilha de leads não mudar.
+ */
+import Cta from '../Cta.astro';
+
+const tipos = [
+  { valor: 'Confraternização da empresa', rotulo: 'Empresa' },
+  { valor: 'Confraternização de amigos ou família', rotulo: 'Amigos ou família' },
+  { valor: 'Outro', rotulo: 'Outro' },
+];
+const locais = [
+  { valor: 'No meu local', rotulo: 'No meu espaço' },
+  { valor: 'Na casa do Kangaça', rotulo: 'No quintal do Kangaça' },
+];
+---
+
+<form class="form-confra" id="orcamento" data-orcamento data-motivo="confra" novalidate>
+  <input type="hidden" name="campanha" value="confra-2026" />
+  <div class="form-confra__cabeca">
+    <h2>Peça seu orçamento</h2>
+    <p>Leva 1 minuto e não compromete nada.</p>
+  </div>
+
+  <fieldset class="campo" aria-describedby="ev-tipo-erro">
+    <legend>A confra é de quem?</legend>
+    <div class="opcoes">
+      {
+        tipos.map((t, i) => (
+          <label class="opcao">
+            <input type="radio" name="tipo" value={t.valor} required={i === 0} />
+            <span>{t.rotulo}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="campo__erro" id="ev-tipo-erro"></p>
+  </fieldset>
+
+  <div class="form-confra__dupla">
+    <div class="campo">
+      <label for="ev-data">Data</label>
+      <input id="ev-data" name="data" type="date" required aria-describedby="ev-data-erro" />
+      <p class="campo__erro" id="ev-data-erro"></p>
+    </div>
+    <div class="campo">
+      <label for="ev-convidados">Convidados</label>
+      <input id="ev-convidados" name="convidados" type="number" min="1" inputmode="numeric" placeholder="Ex.: 30" required aria-describedby="ev-convidados-erro" />
+      <p class="campo__erro" id="ev-convidados-erro"></p>
+    </div>
+  </div>
+
+  <fieldset class="campo" aria-describedby="ev-local-erro">
+    <legend>Onde vai ser?</legend>
+    <div class="opcoes">
+      {
+        locais.map((l, i) => (
+          <label class="opcao">
+            <input type="radio" name="local" value={l.valor} required={i === 0} />
+            <span>{l.rotulo}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="campo__erro" id="ev-local-erro"></p>
+  </fieldset>
+
+  <div class="form-confra__dupla form-confra__dupla--contato">
+    <div class="campo">
+      <label for="ev-nome">Seu nome</label>
+      <input id="ev-nome" name="nome" type="text" autocomplete="name" required aria-describedby="ev-nome-erro" />
+      <p class="campo__erro" id="ev-nome-erro"></p>
+    </div>
+    <div class="campo">
+      <label for="ev-whatsapp">WhatsApp com DDD</label>
+      <input id="ev-whatsapp" name="whatsapp" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="(11) 90000-0000" required aria-describedby="ev-whatsapp-erro" />
+      <p class="campo__erro" id="ev-whatsapp-erro"></p>
+    </div>
+  </div>
+
+  <!-- Armadilha para robôs: pessoas não veem nem alcançam este campo. -->
+  <div class="visualmente-oculto" aria-hidden="true">
+    <label for="ev-empresa">Empresa</label>
+    <input id="ev-empresa" name="empresa" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="campo">
+    <label for="ev-obs">Algo mais? <span>(opcional)</span></label>
+    <textarea id="ev-obs" name="observacoes" rows="2" placeholder="Almoço, happy hour ou jantar, horário, restrições alimentares…"></textarea>
+  </div>
+
+  <button class="btn btn--primario form-confra__enviar" type="submit">Receber meu orçamento</button>
+  <p class="form-confra__nota">
+    Seu pedido abre pronto no WhatsApp, é só enviar. Guardamos os dados para preparar o orçamento (<a href="/politica-de-privacidade/">privacidade</a>).
+  </p>
+  <p class="orcamento__status" role="status" data-orcamento-status></p>
+  <p class="form-confra__direto">
+    Prefere conversar? <Cta motivo="confra" local="formulario" variante="contorno" class="btn--escuro form-confra__wa">Chamar no WhatsApp</Cta>
+  </p>
+</form>
+
+<style>
+  .form-confra {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border-radius: 14px;
+    background: #fbf6ee;
+    color: var(--tinta);
+    box-shadow: 0 24px 60px -24px rgb(0 0 0 / 0.45);
+    scroll-margin-top: 5.5rem;
+  }
+
+  .form-confra__cabeca h2 {
+    font-size: clamp(1.6rem, 4vw, 2rem);
+  }
+
+  .form-confra__cabeca p {
+    margin: 0.25rem 0 0;
+    color: #4a5b5c;
+  }
+
+  .form-confra__dupla {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* O campo de data tem largura mínima própria no celular: sem isto ele vaza da coluna */
+  .form-confra input {
+    min-width: 0;
+  }
+
+  /* Nome e WhatsApp só lado a lado quando há espaço */
+  .form-confra__dupla--contato {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 480px) {
+    .form-confra__dupla--contato {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  .opcoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .opcao {
+    position: relative;
+  }
+
+  .opcao input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .opcao span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid #9aa9a9;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .opcao input:checked + span {
+    border-color: var(--turquesa-profundo);
+    background: var(--turquesa-profundo);
+    color: var(--bege-claro);
+  }
+
+  .opcao input:focus-visible + span {
+    outline: 2px solid var(--terracota);
+    outline-offset: 2px;
+  }
+
+  .form-confra__enviar {
+    width: 100%;
+    min-height: 3.4rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .form-confra__nota {
+    margin: -0.4rem 0 0;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: #4a5b5c;
+  }
+
+  .form-confra__direto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+    margin: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgb(14 70 77 / 0.15);
+    font-size: 0.95rem;
+  }
+
+  .form-confra__direto :global(.form-confra__wa) {
+    min-height: 2.75rem;
+    padding: 0.45rem 1.1rem;
+    font-size: 0.95rem;
+  }
+
+</style>

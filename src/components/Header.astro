@@ -5,8 +5,10 @@ import logo from '../assets/logo/kangaca-logo-bege.png';
 interface Props {
   sobreHero?: boolean;
   logoFixo?: boolean;
+  /** Página de anúncio: sem menu, só a volta para a home e o atalho para o formulário. */
+  landing?: boolean;
 }
-const { sobreHero = false, logoFixo = false } = Astro.props;
+const { sobreHero = false, logoFixo = false, landing = false } = Astro.props;
 
 const links = [
   { href: '/#casa', rotulo: 'A casa' },
@@ -22,20 +24,35 @@ const links = [
   <a class="header__logo" href="/#topo" aria-label="Kangaça, voltar ao início">
     <img src={logo.src} alt="" width={logo.width} height={logo.height} />
   </a>
-  <nav class="header__nav" aria-label="Principal">
-    {links.map((l) => <a href={l.href}>{l.rotulo}</a>)}
-  </nav>
-  <Cta motivo="reserva" local="header" class="header__cta">Reservar</Cta>
-  <button class="header__botao" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-menu-botao>
-    <span></span><span></span>
-  </button>
+  {
+    landing ? (
+      <>
+        <a class="header__home" href="/">Conheça o Kangaça</a>
+        <a class="btn btn--primario header__cta" href="#orcamento" data-cta="confra" data-local="header">Pedir orçamento</a>
+      </>
+    ) : (
+      <>
+        <nav class="header__nav" aria-label="Principal">
+          {links.map((l) => <a href={l.href}>{l.rotulo}</a>)}
+        </nav>
+        <Cta motivo="reserva" local="header" class="header__cta">Reservar</Cta>
+        <button class="header__botao" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-menu-botao>
+          <span></span><span></span>
+        </button>
+      </>
+    )
+  }
 </header>
 
-<div id="menu" class="menu" data-menu inert>
-  <nav aria-label="Menu">
-    <ul>
-      {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.rotulo}</a></li>)}
-    </ul>
-  </nav>
-  <Cta motivo="reserva" local="menu">Reservar pelo WhatsApp</Cta>
-</div>
+{
+  !landing && (
+    <div id="menu" class="menu" data-menu inert>
+      <nav aria-label="Menu">
+        <ul>
+          {links.map((l, i) => <li style={`--i:${i}`}><a href={l.href}>{l.rotulo}</a></li>)}
+        </ul>
+      </nav>
+      <Cta motivo="reserva" local="menu">Reservar pelo WhatsApp</Cta>
+    </div>
+  )
+}

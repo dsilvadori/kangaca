@@ -1,38 +1,596 @@
 ---
-import Campanha from '../layouts/Campanha.astro';
-import HeroCampanha from '../components/secoes/HeroCampanha.astro';
-import Eventos from '../components/secoes/Eventos.astro';
-import NaMesa from '../components/secoes/NaMesa.astro';
-import Conceito from '../components/secoes/Conceito.astro';
+/*
+ * Página de destino dos anúncios de confraternização (Google Ads e Meta).
+ * Tudo empurra para o formulário (#orcamento), que já aparece no topo. A casa e a chef ficam
+ * para a home, alcançável por "Conheça o Kangaça" no header e no fim da página.
+ */
+import Base from '../layouts/Base.astro';
+import Img from '../components/Img.astro';
+import Onda from '../components/Onda.astro';
 import Cta from '../components/Cta.astro';
-import cortinas from '../assets/fotos/jardim-cortinas.jpg';
+import SeloGoogle from '../components/SeloGoogle.astro';
+import NaMesa from '../components/secoes/NaMesa.astro';
+import FormularioConfra from '../components/confra/FormularioConfra.astro';
+import { avaliacoes } from '../data/avaliacoes';
+import { GOOGLE, ENDERECO } from '../config/site';
+import { breadcrumb } from '../lib/jsonld';
+import fotoHero from '../assets/fotos/bia-souza-com-bandeja.jpg';
+import fotoEspaco from '../assets/pratos/evento-buffet-finger-food.jpg';
+import fotoQuintal from '../assets/fotos/jardim-cortinas.jpg';
+
+const caminho = '/confraternizacao-fim-de-ano/';
+const nome = 'Confraternização de fim de ano';
+
+const beneficios = ['Cardápio montado com você', 'Mesa montada e servida pela nossa equipe', 'No seu espaço ou no nosso quintal'];
+
+const passos = [
+  { titulo: 'Conte sobre a confra', texto: 'Data, número de pessoas e onde vai ser. Leva 1 minuto pelo formulário.' },
+  { titulo: 'Receba a proposta', texto: 'A gente monta o cardápio com você e manda o orçamento pelo WhatsApp.' },
+  { titulo: 'Só aproveite', texto: 'No dia, cozinhamos, montamos a mesa e servimos. Sua equipe só chega e come.' },
+];
+
+const formatos = [
+  {
+    id: 'espaco',
+    valor: 'No meu local',
+    titulo: 'No seu espaço',
+    texto: 'Levamos buffet, finger foods, drinks e doces até o escritório, o salão ou a casa de vocês, com montagem e serviço.',
+    botao: 'Quero no meu espaço',
+    foto: fotoEspaco,
+    alt: 'Equipe do Kangaça montando uma mesa de finger foods em um evento',
+  },
+  {
+    id: 'quintal',
+    valor: 'Na casa do Kangaça',
+    titulo: 'No nosso quintal',
+    texto: `Um canto de quintal com plantas, cortinas claras e mesas ao ar livre, na ${ENDERECO.rua}, Vila Mariana.`,
+    botao: 'Quero no quintal',
+    foto: fotoQuintal,
+    alt: 'Quintal do Kangaça com cortinas claras, samambaias e mesas ao ar livre',
+  },
+];
+
+// Só as avaliações com frase de destaque, que funcionam em cartão curto.
+const depoimentos = avaliacoes.filter((a) => a.destaque).slice(0, 3);
+
+const perguntas = [
+  {
+    p: 'Vocês atendem no escritório da empresa?',
+    r: 'Sim. Levamos a comida, montamos a mesa e servimos no seu espaço. Se preferir, a confra pode acontecer no nosso quintal, na Vila Mariana.',
+  },
+  {
+    p: 'Quanto custa?',
+    r: 'Depende do cardápio, do número de pessoas e do formato. Conte sua ideia no formulário e mandamos uma proposta de acordo com o seu grupo e o seu orçamento.',
+  },
+  {
+    p: 'Dá para adaptar o cardápio?',
+    r: 'Dá, o cardápio é montado com você: buffet, finger foods, drinks e doces. Se alguém tiver restrição alimentar, é só avisar no pedido.',
+  },
+  {
+    p: 'Tem drinks e bebidas?',
+    r: 'Tem. Drinks e bebidas podem entrar na proposta junto com a comida.',
+  },
+  {
+    p: 'Com quanta antecedência devo pedir?',
+    r: 'Quanto antes, melhor: novembro e dezembro são os meses mais disputados. Pedir o orçamento não compromete nada.',
+  },
+];
 ---
 
-<Campanha
+<Base
   titulo="Confraternização de fim de ano em São Paulo | Kangaça"
-  descricao="Confraternização de fim de ano com buffet, finger foods, drinks e doces, no seu espaço ou no nosso quintal na Vila Mariana. Peça seu orçamento pelo WhatsApp."
-  caminho="/confraternizacao-fim-de-ano/"
-  nome="Confraternização de fim de ano"
+  descricao="Confraternização de fim de ano com buffet, finger foods, drinks e doces, no seu espaço ou no nosso quintal na Vila Mariana. Peça seu orçamento em 1 minuto."
+  caminho={caminho}
+  jsonLd={[breadcrumb(nome, caminho)]}
+  logoFixo
+  landing={{ motivo: 'confra' }}
 >
-  <HeroCampanha
-    slot="hero"
-    sobretitulo="Fim de ano no Kangaça"
-    linhas={['Confraternização', 'de fim de ano']}
-    texto="Feche o ano com comida de sustância. Buffet, finger foods, drinks e doces da chef Bia Souza, no seu espaço ou no nosso quintal, na Vila Mariana."
-    imagem={cortinas}
-    alt="Quintal do Kangaça com cortinas claras, samambaias e luz dourada de fim de tarde"
-  >
-    <a class="btn btn--primario" href="#orcamento" data-cta="confra" data-local="hero-confra" data-magnetic>Pedir orçamento</a>
-    <Cta motivo="confra" local="hero-confra" variante="contorno">Falar no WhatsApp</Cta>
-  </HeroCampanha>
-  <Conceito resumo />
-  <NaMesa titulo="Um gostinho do que pode ir à sua confra" cta="confra" />
-  <Eventos
-    sobretitulo="Confraternizações em São Paulo"
-    titulo="A confra da sua equipe, do cardápio ao serviço"
-    lead="Uma cozinha que mistura Brasil, África e Ásia para fechar o ano com quem importa. A gente monta o cardápio com você, cuida da mesa e serve."
-    tipos={['Confraternização da empresa', 'Confraternização de amigos ou família', 'Outro']}
-    campanha="confra-2026"
-    motivo="confra"
+  <section class="topo" data-hero aria-labelledby="topo-titulo">
+    <div class="topo__fundo">
+      <Img src={fotoHero} alt="" sizes="100vw" prioridade />
+    </div>
+    <div class="topo__grade">
+      <div class="topo__texto">
+        <p class="sobretitulo">Confraternização de fim de ano · São Paulo</p>
+        <h1 id="topo-titulo">Feche o ano com uma confra que vira assunto</h1>
+        <p class="topo__sub">
+          Buffet, finger foods, drinks e doces de cozinha autoral, no seu escritório ou no nosso quintal na Vila Mariana.
+        </p>
+        <ul class="topo__beneficios">
+          {beneficios.map((b) => <li>{b}</li>)}
+        </ul>
+        <div class="topo__acoes">
+          <a class="btn btn--primario topo__ir" href="#orcamento" data-cta="confra" data-local="hero-confra">Quero meu orçamento</a>
+          <Cta motivo="confra" local="hero-confra" variante="contorno">Falar no WhatsApp</Cta>
+        </div>
+        <div class="topo__selo"><SeloGoogle /></div>
+      </div>
+      <div class="topo__form">
+        <FormularioConfra />
+      </div>
+    </div>
+  </section>
+
+  <Onda de="escuro" para="claro" />
+
+  <section class="secao secao--clara passos" aria-labelledby="passos-titulo">
+    <p class="sobretitulo">Como funciona</p>
+    <h2 id="passos-titulo">Sua confra resolvida em 3 passos</h2>
+    <ol class="passos__lista">
+      {
+        passos.map((p, i) => (
+          <li>
+            <span class="passos__numero" aria-hidden="true">{i + 1}</span>
+            <h3>{p.titulo}</h3>
+            <p>{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <NaMesa
+    sobretitulo="O que vai na mesa"
+    titulo="O que pode ir na sua confra"
+    texto="Uma cozinha que mistura Brasil, África e Ásia, feita do zero. Alguns exemplos que já saíram daqui:"
+    cta="confra"
   />
-</Campanha>
+
+  <Onda de="claro" para="escuro" />
+
+  <section class="secao secao--escura formatos" aria-labelledby="formatos-titulo">
+    <p class="sobretitulo">Dois jeitos de fazer</p>
+    <h2 id="formatos-titulo">Onde vai ser a sua confra?</h2>
+    <div class="formatos__lista">
+      {
+        formatos.map((f) => (
+          <article class="formato">
+            <div class="formato__foto">
+              <Img src={f.foto} alt={f.alt} sizes="(min-width: 768px) 420px, 100vw" />
+            </div>
+            <div class="formato__corpo">
+              <h3>{f.titulo}</h3>
+              <p>{f.texto}</p>
+              <a class="btn btn--primario" href="#orcamento" data-escolher-local={f.valor} data-cta="confra" data-local={`formato-${f.id}`}>
+                {f.botao}
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <Onda de="escuro" para="claro" />
+
+  <section class="secao secao--clara provas" aria-labelledby="provas-titulo">
+    <p class="sobretitulo">Avaliações do Google</p>
+    <h2 id="provas-titulo">Quem provou, conta</h2>
+    <ul class="provas__lista">
+      {
+        depoimentos.map((d) => (
+          <li>
+            <figure>
+              <p class="provas__estrelas" role="img" aria-label={`${d.nota} de 5 estrelas`}>★★★★★</p>
+              <blockquote>“{d.destaque}”</blockquote>
+              <figcaption>{d.autor}, {d.data}</figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+    <a class="provas__link" href={GOOGLE.url} target="_blank" rel="noopener">Ver todas as avaliações no Google</a>
+  </section>
+
+  <section class="secao secao--clara perguntas" aria-labelledby="perguntas-titulo">
+    <p class="sobretitulo">Dúvidas</p>
+    <h2 id="perguntas-titulo">Perguntas frequentes</h2>
+    <div class="perguntas__lista">
+      {
+        perguntas.map((q) => (
+          <details>
+            <summary>{q.p}</summary>
+            <p>{q.r}</p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <Onda de="claro" para="escuro" />
+
+  <section class="secao secao--escura fechamento" aria-labelledby="fechamento-titulo">
+    <h2 id="fechamento-titulo">Dezembro chega rápido. Garanta a data da sua confra.</h2>
+    <p>Mande o pedido agora e receba a proposta pelo WhatsApp.</p>
+    <div class="fechamento__acoes">
+      <a class="btn btn--primario" href="#orcamento" data-cta="confra" data-local="fechamento">Pedir orçamento</a>
+      <Cta motivo="confra" local="fechamento" variante="contorno">Falar no WhatsApp</Cta>
+    </div>
+    <a class="fechamento__home" href="/">Conheça o Kangaça →</a>
+  </section>
+</Base>
+
+<script>
+  // Botões dos formatos já marcam o local no formulário antes de rolar até ele.
+  document.querySelectorAll<HTMLAnchorElement>('[data-escolher-local]').forEach((botao) => {
+    botao.addEventListener('click', () => {
+      const opcao = document.querySelector<HTMLInputElement>(`#orcamento input[name="local"][value="${botao.dataset.escolherLocal}"]`);
+      if (opcao) opcao.checked = true;
+    });
+  });
+</script>
+
+<style>
+  /* Topo: foto de fundo, texto e o formulário (ao lado no computador, logo abaixo no celular) */
+  .topo {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem var(--margem) clamp(2.5rem, 6vw, 4rem);
+    background: var(--turquesa-profundo);
+    color: var(--bege-claro);
+  }
+
+  .topo__fundo {
+    position: absolute;
+    inset: 0 0 auto;
+    height: min(46rem, 100svh);
+  }
+
+  .topo__fundo :global(picture),
+  .topo__fundo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 62%;
+  }
+
+  .topo__fundo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(14 70 77 / 0.45) 0%, rgb(14 70 77 / 0.8) 50%, var(--turquesa-profundo) 100%);
+  }
+
+  .topo__grade {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    max-width: var(--largura);
+    margin: 0 auto;
+  }
+
+  .topo__texto .sobretitulo {
+    color: var(--bege);
+  }
+
+  .topo h1 {
+    font-size: clamp(2.3rem, 7vw, 3.8rem);
+    line-height: 1.05;
+  }
+
+  .topo__sub {
+    margin: 1rem 0 0;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.5;
+    max-width: 36rem;
+  }
+
+  .topo__beneficios {
+    display: grid;
+    gap: 0.45rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .topo__beneficios li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+  }
+
+  .topo__beneficios li::before {
+    content: '✓';
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--terracota);
+    color: var(--bege-claro);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .topo__acoes {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .topo__selo {
+    margin-top: 0.5rem;
+  }
+
+  /* Como funciona */
+  .passos {
+    text-align: center;
+  }
+
+  .passos h2,
+  .provas h2,
+  .perguntas h2,
+  .formatos h2 {
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  }
+
+  .passos__lista {
+    display: grid;
+    gap: 1.75rem;
+    max-width: 64rem;
+    margin: 2.5rem auto 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .passos__numero {
+    display: inline-grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.75rem;
+    border-radius: 50%;
+    background: var(--turquesa-profundo);
+    color: var(--bege-claro);
+    font-family: var(--serif);
+    font-size: 1.5rem;
+  }
+
+  .passos h3 {
+    font-size: 1.45rem;
+  }
+
+  .passos__lista p {
+    max-width: 22rem;
+    margin: 0.4rem auto 0;
+  }
+
+  /* Formatos */
+  .formatos {
+    text-align: center;
+  }
+
+  .formatos__lista {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 60rem;
+    margin: 2.5rem auto 0;
+  }
+
+  .formato {
+    overflow: hidden;
+    border-radius: 14px;
+    background: rgb(244 236 223 / 0.06);
+    border: 1px solid rgb(217 188 147 / 0.25);
+    text-align: left;
+  }
+
+  .formato__foto {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .formato__foto :global(picture),
+  .formato__foto :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .formato__corpo {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.4rem;
+  }
+
+  .formato h3 {
+    font-size: 1.6rem;
+  }
+
+  .formato p {
+    margin: 0;
+  }
+
+  .formato .btn {
+    justify-self: start;
+  }
+
+  /* Avaliações */
+  .provas {
+    text-align: center;
+  }
+
+  .provas__lista {
+    display: grid;
+    gap: 1rem;
+    max-width: 64rem;
+    margin: 2.5rem auto 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .provas__lista figure {
+    height: 100%;
+    margin: 0;
+    padding: 1.5rem;
+    border-radius: 14px;
+    background: #fbf6ee;
+    border: 1px solid rgb(14 70 77 / 0.15);
+  }
+
+  .provas__estrelas {
+    margin: 0;
+    color: var(--terracota);
+    letter-spacing: 0.15em;
+  }
+
+  .provas blockquote {
+    margin: 0.6rem 0;
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .provas figcaption {
+    font-size: 0.9rem;
+    color: #4a5b5c;
+  }
+
+  .provas__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    margin-top: 1.25rem;
+    color: var(--turquesa-profundo);
+    font-weight: 500;
+  }
+
+  /* Perguntas */
+  .perguntas {
+    padding-top: 0;
+  }
+
+  .perguntas__lista {
+    max-width: 44rem;
+    margin: 2rem auto 0;
+  }
+
+  .perguntas .sobretitulo,
+  .perguntas h2 {
+    text-align: center;
+  }
+
+  .perguntas details {
+    border-bottom: 1px solid rgb(14 70 77 / 0.2);
+  }
+
+  .perguntas summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding: 0.75rem 0;
+    font-weight: 500;
+    font-size: 1.05rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .perguntas summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .perguntas summary::after {
+    content: '+';
+    flex: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--terracota);
+    transition: transform 0.2s;
+  }
+
+  .perguntas details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .perguntas details p {
+    margin: 0 0 1rem;
+  }
+
+  /* Fechamento */
+  .fechamento {
+    text-align: center;
+  }
+
+  .fechamento h2 {
+    max-width: 40rem;
+    margin: 0 auto;
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  }
+
+  .fechamento > p {
+    margin: 1rem 0 0;
+  }
+
+  .fechamento__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .fechamento__home {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    margin-top: 1.5rem;
+    color: var(--bege);
+  }
+
+  @media (min-width: 768px) {
+    .passos__lista,
+    .provas__lista {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .formatos__lista {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .topo__acoes {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .topo {
+      padding-top: 7.5rem;
+    }
+
+    .topo__fundo {
+      inset: 0;
+      height: auto;
+    }
+
+    .topo__fundo :global(img) {
+      object-position: 50% 70%;
+    }
+
+    .topo__fundo::after {
+      background: linear-gradient(90deg, rgb(14 70 77 / 0.94) 0%, rgb(14 70 77 / 0.8) 45%, rgb(14 70 77 / 0.3) 100%);
+    }
+
+    /* O botão flutuante cobriria o formulário: só aparece depois do topo */
+    :global(html:not(.passou-hero) .flutuante) {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .topo__grade {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 30rem);
+      align-items: center;
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+
+    /* O formulário já está ao lado: o botão de rolar até ele sobra */
+    .topo__ir {
+      display: none;
+    }
+  }
+</style>
