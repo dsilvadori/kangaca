@@ -85,12 +85,13 @@ const perguntas = [
   logoFixo
   landing={{ motivo: 'confra' }}
 >
-  <section class="topo" data-hero aria-labelledby="topo-titulo">
+  <section class="topo" aria-labelledby="topo-titulo">
     <div class="topo__fundo">
       <Img src={fotoHero} alt="" sizes="100vw" prioridade />
     </div>
     <div class="topo__grade">
-      <div class="topo__texto">
+      <!-- Só o texto conta como capa: no celular o formulário vem logo abaixo e precisa do header sólido. -->
+      <div class="topo__texto" data-hero>
         <p class="sobretitulo">Confraternização de fim de ano · São Paulo</p>
         <h1 id="topo-titulo">Feche o ano com uma confraternização que vira assunto</h1>
         <p class="topo__sub">
