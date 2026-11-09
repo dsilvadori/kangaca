@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  // TODO: confirmar domínio
   site: 'https://kangaca.com.br',
   output: 'static',
   integrations: [

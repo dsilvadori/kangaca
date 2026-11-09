@@ -2,5 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-# TODO: confirmar domínio
 Sitemap: https://kangaca.com.br/sitemap-index.xml
