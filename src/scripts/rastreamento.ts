@@ -3,12 +3,14 @@ import { conversaoSendTo, ga4Ativo } from '../config/site';
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    fbq?: (...args: unknown[]) => void;
     __kgAnimacoes?: boolean;
   }
 }
 
-/** Conversão do Google Ads e evento GA4 de um clique que leva ao WhatsApp. */
+/** Conversão do Google Ads, evento GA4 e evento Contact da Meta de um clique que leva ao WhatsApp. */
 export function rastrearWhatsapp(cta: string, local: string) {
+  window.fbq?.('track', 'Contact', { content_name: cta, content_category: local });
   if (!window.gtag) return;
   const sendTo = conversaoSendTo();
   if (sendTo) {
@@ -20,6 +22,7 @@ export function rastrearWhatsapp(cta: string, local: string) {
 }
 
 export function rastrearLead() {
+  window.fbq?.('track', 'Lead');
   if (window.gtag && ga4Ativo()) {
     window.gtag('event', 'generate_lead', { transport_type: 'beacon' });
   }

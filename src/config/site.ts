@@ -114,12 +114,17 @@ export const TRACKING = {
   GA4_ID: 'G-40WDYVLKNE',
   // Tag do Google criada pela conta do Google Ads (contato.kangaca@gmail.com).
   GTM_ID: 'GTM-M64DNH9N',
+  // Pixel da Meta (Facebook/Instagram Ads). Só dispara depois do consentimento.
+  META_PIXEL_ID: '1886427539462721',
 } as const;
 
 const idReal = (id: string) => id !== '' && !id.includes('XXX');
 
 export const trackingAtivo = () =>
-  idReal(TRACKING.GOOGLE_ADS_ID) || idReal(TRACKING.GA4_ID) || idReal(TRACKING.GTM_ID);
+  idReal(TRACKING.GOOGLE_ADS_ID) ||
+  idReal(TRACKING.GA4_ID) ||
+  idReal(TRACKING.GTM_ID) ||
+  idReal(TRACKING.META_PIXEL_ID);
 
 /** `send_to` da conversão do Google Ads, ou null se os IDs ainda não forem reais. */
 export const conversaoSendTo = () =>
@@ -130,3 +135,4 @@ export const conversaoSendTo = () =>
 export const ga4Ativo = () => idReal(TRACKING.GA4_ID);
 export const adsAtivo = () => idReal(TRACKING.GOOGLE_ADS_ID);
 export const gtmAtivo = () => idReal(TRACKING.GTM_ID);
+export const metaAtivo = () => idReal(TRACKING.META_PIXEL_ID);

@@ -16,5 +16,6 @@ banner?.addEventListener('click', (evento) => {
     ad_personalization: valor,
     analytics_storage: valor,
   });
+  window.fbq?.('consent', valor === 'granted' ? 'grant' : 'revoke');
   document.documentElement.classList.remove('pede-consentimento');
 });

@@ -1,7 +1,8 @@
 ---
 // Tags do Google com Consent Mode v2. Só entram na página quando há IDs reais em src/config/site.ts.
 // O consentimento padrão (negado) é definido antes de qualquer script do Google carregar.
-import { TRACKING, trackingAtivo, ga4Ativo, adsAtivo, gtmAtivo } from '../config/site';
+// O Pixel da Meta segue a mesma regra: começa em 'revoke' e só envia eventos depois do 'grant'.
+import { TRACKING, trackingAtivo, ga4Ativo, adsAtivo, gtmAtivo, metaAtivo } from '../config/site';
 
 const ids = [
   ...(ga4Ativo() ? [TRACKING.GA4_ID] : []),
@@ -41,6 +42,23 @@ const ids = [
       )}
       {gtmAtivo() && (
         <script is:inline async src={`https://www.googletagmanager.com/gtm.js?id=${TRACKING.GTM_ID}`} />
+      )}
+      {metaAtivo() && (
+        <script is:inline define:vars={{ pixelId: TRACKING.META_PIXEL_ID }}>
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          var consentiu = false;
+          try { consentiu = localStorage.getItem('kg-consentimento') === 'granted'; } catch (e) {}
+          fbq('consent', consentiu ? 'grant' : 'revoke');
+          fbq('init', pixelId);
+          fbq('track', 'PageView');
+        </script>
       )}
     </>
   )
