@@ -29,6 +29,6 @@ export function rastrearLead() {
 }
 
 document.addEventListener('click', (evento) => {
-  const link = (evento.target as Element).closest<HTMLAnchorElement>('a[href*="wa.me"]');
+  const link = (evento.target as Element).closest<HTMLAnchorElement>('a[href^="/whatsapp"], a[href*="wa.me"]');
   if (link) rastrearWhatsapp(link.dataset.cta ?? 'geral', link.dataset.local ?? 'desconhecido');
 });

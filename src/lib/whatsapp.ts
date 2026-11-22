@@ -2,10 +2,15 @@ import { WHATSAPP } from '../config/site';
 
 export type Motivo = keyof typeof WHATSAPP.mensagens;
 
-/** Link do WhatsApp com a mensagem do motivo. `texto` substitui a mensagem padrão. */
+/**
+ * Link do WhatsApp com a mensagem do motivo. `texto` substitui a mensagem padrão.
+ * Passa pelo Worker (worker/whatsapp.ts), que barra quem está fora do Brasil e verifica
+ * se é robô antes de redirecionar para o wa.me. O número não aparece no link.
+ */
 export function whatsappLink(motivo: Motivo, texto?: string): string {
-  const mensagem = texto ?? WHATSAPP.mensagens[motivo];
-  return `https://wa.me/${WHATSAPP.numero}?text=${encodeURIComponent(mensagem)}`;
+  const parametros = new URLSearchParams({ m: motivo });
+  if (texto) parametros.set('t', texto);
+  return `/whatsapp?${parametros}`;
 }
 
 export interface PedidoEvento {

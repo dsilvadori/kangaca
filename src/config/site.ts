@@ -43,7 +43,7 @@ export const GOOGLE = {
 } as const;
 
 export const WHATSAPP = {
-  // Se mudar o número, atualize também o public/_redirects (/whatsapp).
+  // Usado também pelo Worker (worker/whatsapp.ts), que monta o link do wa.me.
   numero: '5511912082104',
   exibicao: '(11) 91208-2104',
   telefoneE164: '+55-11-91208-2104',

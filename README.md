@@ -56,7 +56,7 @@ Parâmetros de anúncio (`gclid`, `gbraid`, `wbraid`, `utm_*`) são mantidos na 
 
 - **`src/config/site.ts`:** WhatsApp, mensagens, endereço, horários, Instagram, IDs do Google e os `TODO`s. Os dados ficam só aqui.
 - **`src/data/avaliacoes.ts`:** avaliações do Google. Use o texto exato do Google. Nota, total e data de referência ficam em `GOOGLE`, no `site.ts`.
-- **`public/_redirects`:** redirecionamento de `/whatsapp`. Se o número mudar, atualize aqui também.
+- **`/whatsapp`:** link curto para bio e QR code (`/whatsapp?m=evento` usa a mensagem de evento). É atendido pelo Worker; veja "WhatsApp: só Brasil e sem robôs".
 - **`astro.config.mjs` e `public/robots.txt`:** domínio do site.
 - **`src/assets/`:** fotos. Para trocar, substitua o arquivo mantendo o nome. A lista das que merecem foto profissional está em `src/components/Img.astro`.
 - **`npm run icons`:** gera de novo os favicons (a partir de `src/assets/logo/favicon-k.svg`) e a imagem de compartilhamento.
@@ -69,11 +69,28 @@ Preencha `GOOGLE_ADS_ID`, `GOOGLE_ADS_CONVERSION_LABEL` e `GA4_ID` em `src/confi
 - O envio do formulário de eventos dispara também `generate_lead`.
 - O consentimento começa negado (Consent Mode v2) e muda para concedido quando a pessoa clica em "Aceitar".
 
+## WhatsApp: só Brasil e sem robôs
+
+Os botões do site não apontam direto para o `wa.me`: vão para `/whatsapp?m=<motivo>`, atendido por `worker/whatsapp.ts`.
+
+- **Fora do Brasil** (país do Cloudflare diferente de `BR`, inclusive Tor): aparece uma página avisando, em português e inglês, que o WhatsApp é só para o Brasil, com o link do Instagram. O formulário de eventos também não grava pedidos de fora do Brasil.
+- **No Brasil:** o Cloudflare Turnstile verifica se é robô, quase sempre sem pedir nada, e a pessoa segue para o WhatsApp com a mensagem do botão. Se o Turnstile sair do ar, o WhatsApp abre do mesmo jeito.
+
+Isso só vale para quem chega pelo site. O número continua público no rodapé, no Google e no próprio WhatsApp.
+
+### Ligar a verificação de robô (uma vez só)
+
+1. No Cloudflare, vá em **Turnstile > Add widget**. Nome: `Kangaça WhatsApp`. Hostnames: `kangaca.com.br` (e o `*.workers.dev`, se usar). Widget mode: **Managed**.
+2. Copie a **Site Key** para `TURNSTILE_SITEKEY` em `wrangler.jsonc` (em `vars`) e faça o commit.
+3. Adicione a **Secret Key** como secret `TURNSTILE_SECRET` em **Workers & Pages > kangaca > Settings > Variables and Secrets**, ou rode `npx wrangler secret put TURNSTILE_SECRET`.
+
+Enquanto as duas chaves não estiverem configuradas, o `/whatsapp` só bloqueia quem está fora do Brasil.
+
 ## Leads de eventos (planilha)
 
 Cada envio do formulário de eventos vira uma linha numa Google Sheet antes de abrir o WhatsApp. Se o envio falhar, o WhatsApp abre do mesmo jeito. O caminho é formulário → Worker (`/api/leads`) → Apps Script → planilha. Nada fica guardado no Cloudflare.
 
-- **`worker/`:** valida o pedido, barra robôs (campo escondido e no máximo 5 envios por minuto por IP) e repassa para a planilha.
+- **`worker/`:** valida o pedido, barra robôs (campo escondido e no máximo 5 envios por minuto por IP), recusa pedidos de fora do Brasil e repassa para a planilha.
 - **`apps-script/planilha-leads.gs`:** o script da planilha. Monta a aba `Leads`, grava cada pedido e põe o WhatsApp como link que abre a conversa com uma mensagem pronta.
 - **Na planilha:** a equipe muda o **Status** (Novo, Em conversa, Orçado, Fechado, Perdido), anota o **Valor fechado** e escreve em **Anotações**. Para atender a um pedido de exclusão, apague a linha.
 
