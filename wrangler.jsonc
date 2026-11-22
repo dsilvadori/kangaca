@@ -21,7 +21,7 @@
   "vars": {
     // Site key do Turnstile (pública). Vazia = /whatsapp só bloqueia fora do Brasil, sem verificar robô.
     // TURNSTILE_SECRET é secret: configure no painel do Cloudflare (veja o README).
-    "TURNSTILE_SITEKEY": ""
+    "TURNSTILE_SITEKEY": "0x4AAAAAAGN2X0WPkEj15tGZ"
   }
   // PLANILHA_URL e PLANILHA_TOKEN são secrets: configure no painel do Cloudflare (veja o README).
 }
